@@ -2,8 +2,10 @@ package com.example.open_weater_kotlin_uiui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val Purple80 = Color(0xFFD0BCFF)
+val PurpleGrey80 = Color(0xFFCCC2DC)
+val Pink80 = Color(0xFFEFB8C8)
 
-val WeatherBlack = Color(0xFF323232)
-val WeatherBlackDark = Color(0xFF191919)
-val WeatherGreen = Color(0xFF67b015)
-val WeatherGreenDark = Color(0xFF1B6400)
+val Purple40 = Color(0xFF6650a4)
+val PurpleGrey40 = Color(0xFF625b71)
+val Pink40 = Color(0xFF7D5260)
