@@ -1,12 +1,9 @@
-package com.example.open_weater_kotlin_uidata.model
+package com.example.open_weater_kotlin_ui.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
 data class CurrentWeather(
-    @PrimaryKey(autoGenerate = true) val currentWeatherId: Int = 0,
+    val currentWeatherId: Int = 0,
     val id: Long,
     val coord: Coord?,
     val weather: List<Weather>?,
@@ -40,10 +37,10 @@ data class Main(
     val temp: Double?,
     @SerializedName("feels_like") val feelsLike: Double?,
     @SerializedName("temp_min") val tempMin: Double?,
-    @SerializedName("temp_max")  val tempMax: Double?,
+    @SerializedName("temp_max") val tempMax: Double?,
     val pressure: Long?,
     val humidity: Long?,
-    @SerializedName("sea_level")  val seaLevel: Long?,
+    @SerializedName("sea_level") val seaLevel: Long?,
     @SerializedName("grnd_level") val grndLevel: Long?
 )
 
