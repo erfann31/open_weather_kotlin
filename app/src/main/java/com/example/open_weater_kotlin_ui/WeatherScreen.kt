@@ -25,14 +25,13 @@ import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 @Composable
 fun WeatherScreen(
-    viewModel: WeatherViewModel = viewModel()
+    viewModel: WeatherViewModel = viewModel(),
 ) {
     val locationName = rememberSaveable { mutableStateOf("") }
     val locationCoordinates by viewModel.locationCoordinates.observeAsState(emptyList())
     val currentWeather by viewModel.currentWeather.observeAsState()
     val dailyForecast by viewModel.dailyForecast.observeAsState()
     val hourlyForecast by viewModel.hourlyForecast.observeAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,6 +44,7 @@ fun WeatherScreen(
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Enter location name") }
         )
+
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = { viewModel.getLocationCoordinates(locationName.value) },
@@ -52,7 +52,6 @@ fun WeatherScreen(
         ) {
             Text("Get Weather")
         }
-
         if (locationCoordinates.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
             Divider(modifier = Modifier.height(2.dp))

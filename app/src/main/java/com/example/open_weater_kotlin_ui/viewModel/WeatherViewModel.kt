@@ -12,6 +12,7 @@ import com.example.open_weater_kotlin_ui.models.LocationCoordinate
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
+
     private val _locationCoordinates = MutableLiveData<List<LocationCoordinate>>()
     val locationCoordinates: LiveData<List<LocationCoordinate>> = _locationCoordinates
 
@@ -24,6 +25,11 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     private val _hourlyForecast = MutableLiveData<ForecastHourly>()
     val hourlyForecast: LiveData<ForecastHourly> = _hourlyForecast
 
+    fun updateWeatherData(lat: Double, lon: Double) {
+        viewModelScope.launch {
+            fetchWeatherData(lat, lon)
+        }
+    }
     fun getLocationCoordinates(locationName: String) {
         viewModelScope.launch {
             val response = repository.getCoordinatesByLocationName(locationName)
