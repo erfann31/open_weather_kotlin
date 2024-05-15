@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                 if (latitude != null && longitude != null) {
                     setContent {
                         WeatherApp {
-                            WeatherScreen(viewModel)
+                            HourlyForecast(viewModel)
                         }
                     }
                 }

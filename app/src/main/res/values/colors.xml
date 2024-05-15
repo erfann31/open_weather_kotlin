@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="customBlue">#FF004451</color>
+    <color name="customCyan">#FF4DFFF6</color>
+    <color name="customCard">#FF59BABC</color>
+    <color name="customBox">#FF8EBDBE</color>
+    <color name="BlueText">#FF0C626C</color>
+
 </resources>

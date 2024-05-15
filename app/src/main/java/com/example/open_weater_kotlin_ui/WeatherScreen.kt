@@ -1,5 +1,6 @@
 package com.example.open_weater_kotlin_ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -88,6 +89,7 @@ fun WeatherScreen(
             hourlyForecast!!.list?.take(10)?.forEach { forecast ->
                 Text("${forecast.dateTimeText} - ${forecast.weather?.firstOrNull()?.description}")
             }
+
         }
         Spacer(modifier = Modifier.height(16.dp))
 
