@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.entities.DailyForecast
+import com.example.open_weater_kotlin_ui.models.utils.Util
+import com.example.open_weater_kotlin_ui.models.utils.Util.convertMillisToDate
+import com.example.open_weater_kotlin_ui.models.utils.Util.getDayOfWeek
 import com.example.open_weater_kotlin_ui.models.utils.Util.getResourceId
 import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
 
@@ -60,7 +63,7 @@ fun RowItems(item: DailyForecast, index: Int) {
         )
         {
             Text(
-                text = item.dateTimeText!!.substring(10, 16),
+                text = (getDayOfWeek(convertMillisToDate(item.dt!!))),
                 style = TextStyle(
                     color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                     fontWeight = FontWeight.Bold,
@@ -70,15 +73,14 @@ fun RowItems(item: DailyForecast, index: Int) {
             )
             Icon(
                 modifier = Modifier
-                    .scale(1.8f), painter = getResourceId(
-                    item.weather?.get(0)?.icon.toString(),
-                    item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
-                ), contentDescription = null,
+                    .scale(1.8f), painter = Util.getResourceId_weekly(
+                    item.weather?.get(0)?.icon.toString()),
+                contentDescription = null,
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
 
             Text(
-                text = "${item.main!!.temp?.toInt().toString()}°",
+                text = "${item.temp?.day?.toInt().toString()}°",
                 style = TextStyle(
                     color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                     fontWeight = FontWeight.Bold,
