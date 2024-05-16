@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.entities.HourlyForecast
 import com.example.open_weater_kotlin_ui.models.utils.Util.getResourceId
-import com.example.open_weater_kotlin_ui.selectedItemId
+import com.example.open_weater_kotlin_ui.viewModel.selectedItemId
 
 
 @Composable
@@ -66,8 +66,7 @@ fun RowItems(item: HourlyForecast, index: Int){
                 ),
             )
             Icon(modifier = Modifier
-                .size(36.dp)
-                .scale(1.5f)
+                .scale(1.8f)
                 ,painter = getResourceId(
                     item.weather?.get(0)?.icon.toString(),
                     item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0)

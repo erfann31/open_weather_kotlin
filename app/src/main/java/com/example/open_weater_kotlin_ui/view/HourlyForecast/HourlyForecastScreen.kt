@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.entities.HourlyForecast
 import com.example.open_weater_kotlin_ui.models.utils.Util.getGeographicalDirection
 import com.example.open_weater_kotlin_ui.models.utils.Util.getHumidityType
