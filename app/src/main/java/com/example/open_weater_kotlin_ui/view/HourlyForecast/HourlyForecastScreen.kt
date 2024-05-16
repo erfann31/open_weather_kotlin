@@ -32,11 +32,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -50,13 +48,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.open_weater_kotlin_ui.models.HourlyForecast
+import com.example.open_weater_kotlin_ui.models.entities.HourlyForecast
+import com.example.open_weater_kotlin_ui.models.utils.Util.getGeographicalDirection
+import com.example.open_weater_kotlin_ui.models.utils.Util.getHumidityType
+import com.example.open_weater_kotlin_ui.models.utils.Util.getStatus
+import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.GridItems
+import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.RowItems
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val selectedItemId = mutableIntStateOf(0)
 
 @Composable
-fun HourlyForecast(
+fun HourlyForecastScreen(
     viewModel: WeatherViewModel = viewModel(),
 ) {
     val hourlyForecast by viewModel.hourlyForecast.observeAsState()
@@ -199,159 +202,4 @@ fun HourlyForecast(
     }
 
     }
-
-
-@Composable
-fun RowItems(item: HourlyForecast, index: Int){
-    val isSelected= selectedItemId.intValue ==index
-    Card(modifier = Modifier
-        .padding(6.dp)
-        .height(190.dp)
-        .clickable { if (!isSelected) selectedItemId.intValue = index } ,
-        shape = RoundedCornerShape(50.dp),
-      colors = CardDefaults.cardColors(
-          containerColor = if(isSelected) Color.White else colorResource(R.color.customCard)
-      ),
-      elevation = CardDefaults.cardElevation(10.dp))
-    {
-     Column(modifier = Modifier
-         .padding(10.dp)
-         .fillMaxSize(),
-         verticalArrangement = Arrangement.SpaceEvenly,
-         horizontalAlignment = Alignment.CenterHorizontally) 
-     {
-         Text(text = item.dateTimeText!!.substring(10, 16)
-            ,style = TextStyle(
-            color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.poppins_bold))),
-        )
-         Icon(modifier = Modifier
-             .size(36.dp)
-             .scale(1.5f)
-             ,painter =getResourceId(
-                 item.weather?.get(0)?.icon.toString(),
-                 item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0)
-             , contentDescription =null,
-             tint=if(isSelected) colorResource(R.color.customCard) else Color.White)
-
-         Text(text = "${item.main!!.temp?.toInt().toString()}°"
-             ,style = TextStyle(
-                 color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-                 fontWeight = FontWeight.Bold,
-                 fontSize = 16.sp,
-                 fontFamily = FontFamily(Font(R.font.poppins_bold))),
-         )
-
-     }
-
-
-  }
-}
-
-@Composable
-fun GridItems(item: MutableMap<String, Any?>) {
-
-    Card(modifier = Modifier
-        .padding(vertical = 10.dp , horizontal = 5.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor =  colorResource(R.color.customBox)),
-        elevation = CardDefaults.cardElevation(10.dp))
-    {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically) {
-            Icon(modifier = Modifier
-                .size(32.dp)
-                .scale(1.3f)
-                ,painter = painterResource(id= item["icon"] as Int)
-                , contentDescription =null,
-                tint= Color.White)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(text = item["title"] as String,
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold))))
-
-        }
-
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally)
-        {
-
-            (item["txt1"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))),
-                )
-            }
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            (item["txt2"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color =  Color.White,
-                    fontWeight = FontWeight.Light,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_light))),
-                )
-            }
-
-        }
-
-
-    }
-}
-
-@Composable
-fun getResourceId(iconName: String,currentTime: Int): Painter {
-    val suffix=if(currentTime in 6..18 )"d" else "n"
-    val resourceName = "ic${iconName.substring(0, 2)}${suffix}"
-    return painterResource(id =R.drawable::class.java.getField(resourceName).getInt(null))
-}
-fun getHumidityType(percentage: Int): String {
-    return when {
-        percentage in 30..50 -> "Normal "
-        percentage < 30 -> "Low "
-        percentage in 51..70 -> "High"
-        else -> "Very High"
-    }
-}
-fun getGeographicalDirection(degree: Int): String {
-    return when (degree) {
-        in 0..22 -> "North"
-        in 23..67 -> "Northeast"
-        in 68..112 -> "East"
-        in 113..157 -> "Southeast"
-        in 158..202 -> "South"
-        in 203..247 -> "Southwest"
-        in 248..292 -> "West"
-        in 293..337 -> "Northwest"
-        in 338..360 -> "North"
-        else -> "Invalid Degree"
-    }
-}
-fun getStatus(number: Int): String {
-    return when (number) {
-        2 -> "Thunderstorm"
-        3 -> "Rainy"
-        5 -> "Rainy"
-        6 -> "Snowy"
-        7 -> "Misty"
-        8 ->"Cloudy"
-        else -> ""
-    }
-}
 

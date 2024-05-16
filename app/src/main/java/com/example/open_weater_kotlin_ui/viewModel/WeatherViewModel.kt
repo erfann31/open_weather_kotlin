@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.open_weater_kotlin_ui.models.WeatherRepository
 
-import com.example.open_weater_kotlin_ui.models.CurrentWeather
-import com.example.open_weater_kotlin_ui.models.ForecastDaily
-import com.example.open_weater_kotlin_ui.models.ForecastHourly
-import com.example.open_weater_kotlin_ui.models.LocationCoordinate
+import com.example.open_weater_kotlin_ui.models.entities.CurrentWeather
+import com.example.open_weater_kotlin_ui.models.entities.ForecastDaily
+import com.example.open_weater_kotlin_ui.models.entities.ForecastHourly
+import com.example.open_weater_kotlin_ui.models.entities.LocationCoordinate
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {

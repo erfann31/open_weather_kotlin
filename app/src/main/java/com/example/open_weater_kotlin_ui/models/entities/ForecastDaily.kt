@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.models
+package com.example.open_weater_kotlin_ui.models.entities
 
 
 data class ForecastDaily(

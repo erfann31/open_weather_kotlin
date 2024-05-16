@@ -1,10 +1,10 @@
-package com.example.open_weater_kotlin_ui.domain
+package com.example.open_weater_kotlin_ui.models.domain
 
 
-import com.example.open_weater_kotlin_ui.models.CurrentWeather
-import com.example.open_weater_kotlin_ui.models.ForecastDaily
-import com.example.open_weater_kotlin_ui.models.ForecastHourly
-import com.example.open_weater_kotlin_ui.models.LocationCoordinate
+import com.example.open_weater_kotlin_ui.models.entities.CurrentWeather
+import com.example.open_weater_kotlin_ui.models.entities.ForecastDaily
+import com.example.open_weater_kotlin_ui.models.entities.ForecastHourly
+import com.example.open_weater_kotlin_ui.models.entities.LocationCoordinate
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
