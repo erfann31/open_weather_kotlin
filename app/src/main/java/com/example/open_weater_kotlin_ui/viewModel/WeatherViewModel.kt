@@ -31,6 +31,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             fetchWeatherData(lat, lon)
         }
     }
+
     fun getLocationCoordinates(locationName: String) {
         viewModelScope.launch {
             val response = repository.getCoordinatesByLocationName(locationName)

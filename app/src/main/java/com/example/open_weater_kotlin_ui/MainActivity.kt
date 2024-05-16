@@ -1,12 +1,13 @@
 package com.example.open_weater_kotlin_ui
-import android.content.Context
-import android.provider.Settings
-import android.content.Intent
+
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,8 +21,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.models.WeatherRepository
+import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
@@ -109,7 +110,8 @@ class MainActivity : ComponentActivity() {
             override fun onProviderEnabled(provider: String) {}
 
             @Deprecated("Deprecated in Java")
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            }
         }, null)
     }
 }

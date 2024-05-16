@@ -33,27 +33,32 @@ import com.example.open_weater_kotlin_ui.R
 @Composable
 fun GridItems(item: MutableMap<String, Any?>) {
 
-    Card(modifier = Modifier
-        .padding(vertical = 10.dp , horizontal = 5.dp),
+    Card(
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 5.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor =  colorResource(R.color.customBox)),
-        elevation = CardDefaults.cardElevation(10.dp))
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
+        elevation = CardDefaults.cardElevation(10.dp)
+    )
     {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically) {
-            Icon(modifier = Modifier
-                .size(32.dp)
-                .scale(1.3f)
-                ,painter = painterResource(id= item["icon"] as Int)
-                , contentDescription =null,
-                tint= Color.White)
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(32.dp)
+                    .scale(1.3f), painter = painterResource(id = item["icon"] as Int), contentDescription = null,
+                tint = Color.White
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(text = item["title"] as String,
+            Text(
+                text = item["title"] as String,
                 style = TextStyle(
                     color = Color.White,
                     fontWeight = FontWeight.Normal,
@@ -64,32 +69,38 @@ fun GridItems(item: MutableMap<String, Any?>) {
 
         }
 
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally)
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
         {
 
             (item["txt1"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))
-                ),
+                Text(
+                    text = it,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_bold))
+                    ),
                 )
             }
 
             Spacer(modifier = Modifier.height(6.dp))
 
             (item["txt2"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color =  Color.White,
-                    fontWeight = FontWeight.Light,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_light))
-                ),
+                Text(
+                    text = it,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                    ),
                 )
             }
 

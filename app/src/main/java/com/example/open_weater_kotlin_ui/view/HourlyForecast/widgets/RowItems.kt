@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -34,9 +33,9 @@ import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
 
 
 @Composable
-fun RowItems(item: HourlyForecast, index: Int){
+fun RowItems(item: HourlyForecast, index: Int) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isSelected= selectedItemId.intValue ==index
+    val isSelected = selectedItemId.intValue == index
     Card(modifier = Modifier
         .padding(6.dp)
         .height(190.dp)
@@ -44,37 +43,42 @@ fun RowItems(item: HourlyForecast, index: Int){
         .clickable(
             interactionSource = interactionSource,
             indication = null
-        ) { if (!isSelected) selectedItemId.intValue = index } ,
+        ) { if (!isSelected) selectedItemId.intValue = index },
         shape = RoundedCornerShape(50.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if(isSelected) Color.White else colorResource(R.color.customCard)
+            containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
         ),
         elevation = CardDefaults.cardElevation(10.dp))
     {
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally)
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
         {
-            Text(text = item.dateTimeText!!.substring(10, 16)
-                ,style = TextStyle(
+            Text(
+                text = item.dateTimeText!!.substring(10, 16),
+                style = TextStyle(
                     color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_bold))
                 ),
             )
-            Icon(modifier = Modifier
-                .scale(1.8f)
-                ,painter = getResourceId(
+            Icon(
+                modifier = Modifier
+                    .scale(1.8f), painter = getResourceId(
                     item.weather?.get(0)?.icon.toString(),
-                    item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0)
-                , contentDescription =null,
-                tint=if(isSelected) colorResource(R.color.customCard) else Color.White)
+                    item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
+                ), contentDescription = null,
+                tint = if (isSelected) colorResource(R.color.customCard) else Color.White
+            )
 
-            Text(text = "${item.main!!.temp?.toInt().toString()}°"
-                ,style = TextStyle(
+            Text(
+                text = "${item.main!!.temp?.toInt().toString()}°",
+                style = TextStyle(
                     color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,

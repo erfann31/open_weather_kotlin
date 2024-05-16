@@ -15,10 +15,10 @@ fun Navigator(viewMode: WeatherViewModel) {
 
     NavHost(navController = navHostController, startDestination = "hourly_forecast") {
         composable("hourly_forecast") {
-            HourlyForecastScreen(navHostController,viewMode)
+            HourlyForecastScreen(navHostController, viewMode)
         }
         composable("change_location") {
-            ChangeLocationScreen(navHostController,viewMode)
+            ChangeLocationScreen(navHostController, viewMode)
         }
     }
 }
