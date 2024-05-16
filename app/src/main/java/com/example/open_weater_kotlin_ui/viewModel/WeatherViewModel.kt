@@ -13,7 +13,7 @@ import com.example.open_weater_kotlin_ui.models.entities.LocationCoordinate
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
-
+    var listener: LocationInfoListener? = null
     private val _locationCoordinates = MutableLiveData<List<LocationCoordinate>>()
     val locationCoordinates: LiveData<List<LocationCoordinate>> = _locationCoordinates
 
@@ -62,5 +62,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         if (hourlyForecastResponse.isSuccessful) {
             _hourlyForecast.value = hourlyForecastResponse.body()
         }
+        listener?.onLocationInfoFetched()
     }
 }
