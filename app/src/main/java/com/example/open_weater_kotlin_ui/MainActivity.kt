@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.open_weater_kotlin_ui.utils.RetrofitInstance
+import com.example.open_weater_kotlin_ui.viewModel.HourlyForecast
 import com.example.open_weater_kotlin_ui.viewModel.WeatherRepository
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModelFactory

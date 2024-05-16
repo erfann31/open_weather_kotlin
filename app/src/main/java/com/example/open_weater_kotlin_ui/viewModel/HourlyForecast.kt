@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui
+package com.example.open_weater_kotlin_ui.viewModel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,11 +32,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -50,8 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.HourlyForecast
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val selectedItemId = mutableIntStateOf(0)
 
@@ -63,7 +61,7 @@ fun HourlyForecast(
     if (hourlyForecast == null) {
         // نمایش پیام Loading
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color =colorResource(R.color.customCard) )
+            CircularProgressIndicator(color = colorResource(R.color.customCard))
         }
     } else {
         val hourlyForecasts: List<HourlyForecast>? = hourlyForecast?.list
@@ -131,66 +129,84 @@ fun HourlyForecast(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.padding( 10.dp)
+                modifier = Modifier.padding(10.dp)
             )
             {
-                hourlyForecast?.city?.name?.let { Text(text = it,
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 30.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold)))
-                )
+                hourlyForecast?.city?.name?.let {
+                    Text(
+                        text = it,
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 30.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                        )
+                    )
                 }
-                Row( horizontalArrangement = Arrangement.SpaceBetween)
+                Row(horizontalArrangement = Arrangement.SpaceBetween)
                 {
-                    Text(text ="${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
+                    Text(
+                        text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_light)))
+                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                        )
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    val id= hourlyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
+                    val id = hourlyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
                     if (id != null) {
-                        Text(text = if(id ==800)"Clear" else getStatus(id/100),
+                        Text(
+                            text = if (id == 800) "Clear" else getStatus(id / 100),
                             style = TextStyle(
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_light))))
+                                fontFamily = FontFamily(Font(R.font.poppins_light))
+                            )
+                        )
                     }
                 }
 
                 TextButton(onClick = { /*TODO*/ }) {
-                    Icon(modifier = Modifier
-                        .scale(0.8f),
-                        painter = painterResource(id = R.drawable.location) , contentDescription =null
-                        , tint = colorResource(id = R.color.customBlue))
+                    Icon(
+                        modifier = Modifier
+                            .scale(0.8f),
+                        painter = painterResource(id = R.drawable.location),
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.customBlue)
+                    )
 
-                    Text(text = "Change Location",
+                    Text(
+                        text = "Change Location",
                         style = TextStyle(
                             color = colorResource(id = R.color.customBlue),
                             fontWeight = FontWeight.Normal,
                             fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_semibold))))
+                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                        )
+                    )
                 }
             }
 
 
-            LazyRow(modifier = Modifier
-                .padding(10.dp)) {
-                items(items = hourlyForecasts ?: emptyList()){items->
+            LazyRow(
+                modifier = Modifier
+                    .padding(10.dp)
+            ) {
+                items(items = hourlyForecasts ?: emptyList()) { items ->
                     if (hourlyForecasts != null) {
-                        RowItems(items,hourlyForecasts.indexOf(items))
+                        RowItems(items, hourlyForecasts.indexOf(items))
                     }
                 }
 
             }
-            LazyVerticalGrid(columns = GridCells.Fixed(2),modifier = Modifier
-                .padding(10.dp)) {
-                items(boxList){item ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), modifier = Modifier
+                    .padding(10.dp)
+            ) {
+                items(boxList) { item ->
                     GridItems(item = item)
                 }
             }
@@ -198,114 +214,142 @@ fun HourlyForecast(
         }
     }
 
-    }
+}
 
 
 @Composable
-fun RowItems(item: HourlyForecast, index: Int){
-    val isSelected= selectedItemId.intValue ==index
-    Card(modifier = Modifier
-        .padding(6.dp)
-        .height(190.dp)
-        .clickable { if (!isSelected) selectedItemId.intValue = index } ,
+fun RowItems(item: HourlyForecast, index: Int) {
+    val isSelected = selectedItemId.intValue == index
+
+    Card(
+        modifier = Modifier
+            .height(204.dp)
+            .padding(6.dp)
+            .clickable { if (!isSelected) selectedItemId.intValue = index },
         shape = RoundedCornerShape(50.dp),
-      colors = CardDefaults.cardColors(
-          containerColor = if(isSelected) Color.White else colorResource(R.color.customCard)
-      ),
-      elevation = CardDefaults.cardElevation(10.dp))
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
+        ),
+        elevation = CardDefaults.cardElevation(10.dp)
+    )
     {
-     Column(modifier = Modifier
-         .padding(10.dp)
-         .fillMaxSize(),
-         verticalArrangement = Arrangement.SpaceEvenly,
-         horizontalAlignment = Alignment.CenterHorizontally) 
-     {
-         Text(text = item.dateTimeText!!.substring(10, 16)
-            ,style = TextStyle(
-            color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.poppins_bold))),
+
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
         )
-         Icon(modifier = Modifier
-             .size(36.dp)
-             .scale(1.5f)
-             ,painter =getResourceId(
-                 item.weather?.get(0)?.icon.toString(),
-                 item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0)
-             , contentDescription =null,
-             tint=if(isSelected) colorResource(R.color.customCard) else Color.White)
+        {
+            Text(
+                text = item.dateTimeText!!.substring(10, 16),
+                style = TextStyle(
+                    color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_bold))
+                ),
+            )
+            Icon(
+                modifier = Modifier
 
-         Text(text = "${item.main!!.temp?.toInt().toString()}°"
-             ,style = TextStyle(
-                 color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-                 fontWeight = FontWeight.Bold,
-                 fontSize = 16.sp,
-                 fontFamily = FontFamily(Font(R.font.poppins_bold))),
-         )
+                    .scale(1.8f), painter = getResourceId(
+                    item.weather?.get(0)?.icon.toString(),
+                    item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
+                ), contentDescription = null,
+                tint = if (isSelected) colorResource(R.color.customCard) else Color.White
+            )
 
-     }
+            Text(
+                text = "${item.main!!.temp?.toInt().toString()}°",
+                style = TextStyle(
+                    color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_bold))
+                ),
+            )
+
+        }
 
 
-  }
+    }
 }
 
 @Composable
 fun GridItems(item: MutableMap<String, Any?>) {
 
-    Card(modifier = Modifier
-        .padding(vertical = 10.dp , horizontal = 5.dp),
+    Card(
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 5.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor =  colorResource(R.color.customBox)),
-        elevation = CardDefaults.cardElevation(10.dp))
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
+        elevation = CardDefaults.cardElevation(10.dp)
+    )
     {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically) {
-            Icon(modifier = Modifier
-                .size(32.dp)
-                .scale(1.3f)
-                ,painter = painterResource(id= item["icon"] as Int)
-                , contentDescription =null,
-                tint= Color.White)
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(32.dp)
+                    .scale(1.3f),
+                painter = painterResource(id = item["icon"] as Int),
+                contentDescription = null,
+                tint = Color.White
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(text = item["title"] as String,
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold))))
+            Text(
+                text = item["title"] as String,
+                style = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                )
+            )
 
         }
 
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally)
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
         {
 
             (item["txt1"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))),
+                Text(
+                    text = it,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_bold))
+                    ),
                 )
             }
 
             Spacer(modifier = Modifier.height(6.dp))
 
             (item["txt2"] as String?)?.let {
-                Text(text = it,style = TextStyle(
-                    color =  Color.White,
-                    fontWeight = FontWeight.Light,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_light))),
+                Text(
+                    text = it,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                    ),
                 )
             }
 
@@ -316,11 +360,12 @@ fun GridItems(item: MutableMap<String, Any?>) {
 }
 
 @Composable
-fun getResourceId(iconName: String,currentTime: Int): Painter {
-    val suffix=if(currentTime in 6..18 )"d" else "n"
+fun getResourceId(iconName: String, currentTime: Int): Painter {
+    val suffix = if (currentTime in 6..18) "d" else "n"
     val resourceName = "ic${iconName.substring(0, 2)}${suffix}"
-    return painterResource(id =R.drawable::class.java.getField(resourceName).getInt(null))
+    return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
 }
+
 fun getHumidityType(percentage: Int): String {
     return when {
         percentage in 30..50 -> "Normal "
@@ -329,6 +374,7 @@ fun getHumidityType(percentage: Int): String {
         else -> "Very High"
     }
 }
+
 fun getGeographicalDirection(degree: Int): String {
     return when (degree) {
         in 0..22 -> "North"
@@ -343,6 +389,7 @@ fun getGeographicalDirection(degree: Int): String {
         else -> "Invalid Degree"
     }
 }
+
 fun getStatus(number: Int): String {
     return when (number) {
         2 -> "Thunderstorm"
@@ -350,7 +397,7 @@ fun getStatus(number: Int): String {
         5 -> "Rainy"
         6 -> "Snowy"
         7 -> "Misty"
-        8 ->"Cloudy"
+        8 -> "Cloudy"
         else -> ""
     }
 }
