@@ -1,6 +1,5 @@
-package com.example.open_weater_kotlin_ui
+package com.example.open_weater_kotlin_ui.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize

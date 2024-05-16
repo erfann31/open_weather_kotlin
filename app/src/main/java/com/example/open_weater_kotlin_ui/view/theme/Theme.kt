@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.ui.theme
+package com.example.open_weater_kotlin_ui.view.theme
 
 import android.app.Activity
 import android.os.Build

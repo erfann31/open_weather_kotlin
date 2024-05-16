@@ -18,9 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.open_weater_kotlin_ui.utils.RetrofitInstance
-import com.example.open_weater_kotlin_ui.viewModel.HourlyForecast
-import com.example.open_weater_kotlin_ui.viewModel.WeatherRepository
+import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
+import com.example.open_weater_kotlin_ui.models.WeatherRepository
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModelFactory
 
@@ -90,7 +89,7 @@ class MainActivity : ComponentActivity() {
                 if (latitude != null && longitude != null) {
                     setContent {
                         WeatherApp {
-                            HourlyForecast(viewModel)
+                            HourlyForecastScreen(viewModel)
                         }
                     }
                 }

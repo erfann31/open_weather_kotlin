@@ -1,12 +1,12 @@
-package com.example.open_weater_kotlin_ui.viewModel
+package com.example.open_weater_kotlin_ui.models
 
-import com.example.open_weater_kotlin_ui.domain.ApiInterface
+import com.example.open_weater_kotlin_ui.models.domain.ApiInterface
 
-import com.example.open_weater_kotlin_ui.models.CurrentWeather
-import com.example.open_weater_kotlin_ui.models.ForecastDaily
-import com.example.open_weater_kotlin_ui.models.ForecastHourly
-import com.example.open_weater_kotlin_ui.models.LocationCoordinate
-import com.example.open_weater_kotlin_ui.utils.RetrofitInstance
+import com.example.open_weater_kotlin_ui.models.entities.CurrentWeather
+import com.example.open_weater_kotlin_ui.models.entities.ForecastDaily
+import com.example.open_weater_kotlin_ui.models.entities.ForecastHourly
+import com.example.open_weater_kotlin_ui.models.entities.LocationCoordinate
+import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
 import retrofit2.Response
 
 class WeatherRepository(private val apiInterface: ApiInterface) {

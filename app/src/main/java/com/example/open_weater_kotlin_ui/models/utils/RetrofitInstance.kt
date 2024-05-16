@@ -1,6 +1,6 @@
-package com.example.open_weater_kotlin_ui.utils
+package com.example.open_weater_kotlin_ui.models.utils
 
-import com.example.open_weater_kotlin_ui.domain.ApiInterface
+import com.example.open_weater_kotlin_ui.models.domain.ApiInterface
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
