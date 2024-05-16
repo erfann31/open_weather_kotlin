@@ -4,6 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.open_weater_kotlin_ui.R
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 object Util {
     const val Base = "https://api.openweathermap.org/"
@@ -48,6 +52,30 @@ object Util {
             else -> ""
         }
     }
+    @Composable
+    fun getResourceId_weekly(iconName: String,): Painter {
+        val resourceName = "ic${iconName.substring(0, 2)}d"
+        return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
+    }
+    fun convertMillisToDate(timestamp: Long):Long {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date(timestamp)).toLong()
+    }
+    fun getDayOfWeek(timestamp: Long): String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timestamp
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
+        return when (dayOfWeek) {
+            Calendar.SUNDAY -> "Sunday"
+            Calendar.MONDAY -> "Monday"
+            Calendar.TUESDAY -> "Tuesday"
+            Calendar.WEDNESDAY -> "Wednesday"
+            Calendar.THURSDAY -> "Thursday"
+            Calendar.FRIDAY -> "Friday"
+            Calendar.SATURDAY -> "Saturday"
+            else -> ""
+        }
+    }
 
 }
