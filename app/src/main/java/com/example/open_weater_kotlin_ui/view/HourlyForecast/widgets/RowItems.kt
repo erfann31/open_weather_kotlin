@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.entities.HourlyForecast
 import com.example.open_weater_kotlin_ui.models.utils.Util.getResourceId
-import com.example.open_weater_kotlin_ui.viewModel.selectedItemId
+import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
 
 
 @Composable
