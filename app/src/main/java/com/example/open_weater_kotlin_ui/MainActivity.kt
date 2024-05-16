@@ -11,15 +11,19 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.models.WeatherRepository
+import com.example.open_weater_kotlin_ui.view.navigation.Navigator
+import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModelFactory
 
@@ -88,8 +92,13 @@ class MainActivity : ComponentActivity() {
 
                 if (latitude != null && longitude != null) {
                     setContent {
-                        WeatherApp {
-                            HourlyForecastScreen(viewModel)
+                        MyApplicationTheme {
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = MaterialTheme.colorScheme.background
+                            ) {
+                                Navigator(viewModel)
+                            }
                         }
                     }
                 }
@@ -113,3 +122,4 @@ fun WeatherApp(content: @Composable () -> Unit) {
         }
     }
 }
+
