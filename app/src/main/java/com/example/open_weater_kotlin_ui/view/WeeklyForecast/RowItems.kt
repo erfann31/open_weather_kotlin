@@ -42,19 +42,22 @@ import com.example.open_weater_kotlin_ui.models.utils.Util.getDayOfWeek
 fun RowItems(item: DailyForecast, index: Int) {
     val interactionSource = remember { MutableInteractionSource() }
     val isSelected = w_selectedItemId.intValue == index
-    Card(modifier = Modifier
-        .padding(6.dp)
-        .height(190.dp)
-        .width(70.dp)
-        .clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { if (!isSelected) w_selectedItemId.intValue = index },
+    val date = item.dt?.let { convertMillisToDate(it) }
+    Card(
+        modifier = Modifier
+            .padding(6.dp)
+            .height(200.dp)
+            .width(70.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { if (!isSelected) w_selectedItemId.intValue = index },
         shape = RoundedCornerShape(50.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
         ),
-        elevation = CardDefaults.cardElevation(10.dp))
+        elevation = CardDefaults.cardElevation(10.dp)
+    )
     {
         Column(
             modifier = Modifier
@@ -64,24 +67,44 @@ fun RowItems(item: DailyForecast, index: Int) {
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            Text(
-                text = (getDayOfWeek(convertMillisToDate(item.dt!!))),
-                style = TextStyle(
-                    color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))
-                ),
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = (getDayOfWeek(date!!)),
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_bold))
+                    ),
+                )
+                Text(
+                    text = "${
+                        if (date[5] == '0') date.substring(6, 7) else date.substring(6, 7)
+                    }  \u0337${
+                        if (date[8] == '0') date.substring(9, 10) else date.substring(8, 10)
+                    }",
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                    )
+                )
+            }
+
             Icon(
                 modifier = Modifier
                     .scale(1.8f), painter = Util.getResourceId_weekly(
-                    item.weather?.get(0)?.icon.toString()),
+                    item.weather?.get(0)?.icon.toString()
+                ),
                 contentDescription = null,
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
 
-            Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            )
             {
                 Text(
                     text = "${item.temp?.day?.toInt().toString()}°",
@@ -94,7 +117,7 @@ fun RowItems(item: DailyForecast, index: Int) {
                 )
 
                 Text(
-                    text = if (metric.value=="℃") "c" else "F",
+                    text = if (metric.value == "℃") "c" else "F",
                     style = TextStyle(
                         color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                         fontWeight = FontWeight.Bold,

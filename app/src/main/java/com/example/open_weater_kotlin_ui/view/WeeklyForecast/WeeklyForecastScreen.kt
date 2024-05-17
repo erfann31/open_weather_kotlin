@@ -85,7 +85,7 @@ fun WeeklyForecastScreen(
         val w_box1 = mutableMapOf<String, Any?>(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
-            "txt1" to "${"%.1f".format(w_selectedItem?.feelsLike?.day)}°",
+            "txt1" to "%.1f".format(w_selectedItem?.feelsLike?.day),
             "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°",
             "txt3" to " ${metric.value}"
         )
