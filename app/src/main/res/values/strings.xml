@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">open_weater_kotlin_ui</string>
+    <string name="add_city">Add a city...</string>
 </resources>
