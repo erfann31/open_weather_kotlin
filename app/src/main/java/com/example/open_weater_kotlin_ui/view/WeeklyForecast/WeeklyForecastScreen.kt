@@ -1,5 +1,7 @@
 package com.example.open_weater_kotlin_ui.view.WeeklyForecast
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,10 +51,11 @@ import com.example.open_weater_kotlin_ui.models.utils.Util.getStatus
 import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.GridItems
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
-val selectedItemId = mutableIntStateOf(0)
+val w_selectedItemId = mutableIntStateOf(0)
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HourlyForecastScreen(
+fun WeeklyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
@@ -65,49 +68,49 @@ fun HourlyForecastScreen(
         }
     } else {
         val dailyForecasts: List<DailyForecast>? = dailyForecast?.list
-        var selectedItem by remember(selectedItemId) { mutableStateOf<DailyForecast?>(null) }
+        var w_selectedItem by remember(w_selectedItemId) { mutableStateOf<DailyForecast?>(null) }
 
-        LaunchedEffect(selectedItemId.intValue) {
+        LaunchedEffect(w_selectedItemId.intValue) {
             dailyForecasts?.let { forecasts ->
-                selectedItem = forecasts.getOrElse(selectedItemId.intValue) { null }
+                w_selectedItem = forecasts.getOrElse(w_selectedItemId.intValue) { null }
             }
         }
-        LaunchedEffect(dailyForecasts, selectedItemId.intValue) {
+        LaunchedEffect(dailyForecasts, w_selectedItemId.intValue) {
             dailyForecasts?.let { forecasts ->
-                if (selectedItemId.intValue >= 0 && selectedItemId.intValue < forecasts.size) {
-                    selectedItem = forecasts[selectedItemId.intValue]
+                if (w_selectedItemId.intValue >= 0 && w_selectedItemId.intValue < forecasts.size) {
+                    w_selectedItem = forecasts[w_selectedItemId.intValue]
                 }
             }
         }
-        val box1 = mutableMapOf<String, Any?>(
+        val w_box1 = mutableMapOf<String, Any?>(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
-            "txt1" to "${"%.1f".format(selectedItem?.feelsLike?.day )}°",
-            "txt2" to "${"%.1f".format(selectedItem?.temp!!.max)}° / ${"%.1f".format(selectedItem?.temp!!.min)}°"
+            "txt1" to "${"%.1f".format(w_selectedItem?.feelsLike?.day)}°",
+            "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°"
         )
 
-        val box2 = mutableMapOf<String, Any?>(
+        val w_box2 = mutableMapOf<String, Any?>(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
-            "txt1" to "${selectedItem?.humidity}%",
-            "txt2" to selectedItem?.humidity?.let { getHumidityType(it.toInt()) }
+            "txt1" to "${w_selectedItem?.humidity}%",
+            "txt2" to w_selectedItem?.humidity?.let { getHumidityType(it.toInt()) }
         )
 
-        val box3 = mutableMapOf<String, Any?>(
+        val w_box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to "${"%.1f".format(selectedItem?.speed)} km/h",
-            "txt2" to "to ${selectedItem?.deg?.let { getGeographicalDirection(it) }}"
+            "txt1" to "${"%.1f".format(w_selectedItem?.speed)} km/h",
+            "txt2" to "to ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}"
         )
 
-        val box4 = mutableMapOf<String, Any?>(
+        val w_box4 = mutableMapOf<String, Any?>(
             "title" to " Cloud Cover",
             "icon" to R.drawable.cloud, // Use resource ID directly
-            "txt1" to "${selectedItem?.clouds}%",
-            "txt2" to selectedItem?.weather?.getOrNull(0)?.description
+            "txt1" to "${w_selectedItem?.clouds}%",
+            "txt2" to w_selectedItem?.weather?.getOrNull(0)?.description
         )
 
-        val boxList = mutableListOf(box1, box2, box3, box4)
+        val w_boxList = mutableListOf(w_box1, w_box2, w_box3, w_box4)
 
         Column(
             modifier = Modifier
@@ -206,7 +209,7 @@ fun HourlyForecastScreen(
                 columns = GridCells.Fixed(2), modifier = Modifier
                     .padding(10.dp)
             ) {
-                items(boxList) { item ->
+                items(w_boxList) { item ->
                     GridItems(item = item)
                 }
             }

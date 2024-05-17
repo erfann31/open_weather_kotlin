@@ -1,5 +1,7 @@
 package com.example.open_weater_kotlin_ui.models.entities
 
+import com.google.gson.annotations.SerializedName
+
 
 data class ForecastDaily(
     val forecastDailyId: Int = 0,
@@ -25,6 +27,7 @@ data class DailyForecast(
     val sunrise: Long?,
     val sunset: Long?,
     val temp: Temperature?,
+    @SerializedName("feels_like")
     val feelsLike: FeelsLike?,
     val pressure: Int?,
     val humidity: Int?,
@@ -47,9 +50,12 @@ data class Temperature(
 )
 
 data class FeelsLike(
+    @SerializedName("day")
     val day: Double?,
+    @SerializedName("night")
     val night: Double?,
+    @SerializedName("eve")
     val eve: Double?,
+    @SerializedName("morn")
     val morn: Double?
 )
-

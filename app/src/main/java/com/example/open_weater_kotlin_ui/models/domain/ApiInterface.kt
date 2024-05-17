@@ -31,7 +31,7 @@ interface ApiInterface {
         @Query("appid") appid: String
     ): Deferred<Response<List<LocationCoordinate>>>
 
-    @GET("data/2.5/forecast/daily?units=metric&cnt=16")
+    @GET("data/2.5/forecast/daily?units=metric&cnt=8")
     fun getDailyForecastAsync(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
