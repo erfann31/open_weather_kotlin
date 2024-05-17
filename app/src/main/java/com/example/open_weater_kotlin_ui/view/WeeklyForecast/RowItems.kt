@@ -1,6 +1,8 @@
 package com.example.open_weater_kotlin_ui.view.WeeklyForecast
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -32,14 +34,13 @@ import com.example.open_weater_kotlin_ui.models.entities.DailyForecast
 import com.example.open_weater_kotlin_ui.models.utils.Util
 import com.example.open_weater_kotlin_ui.models.utils.Util.convertMillisToDate
 import com.example.open_weater_kotlin_ui.models.utils.Util.getDayOfWeek
-import com.example.open_weater_kotlin_ui.models.utils.Util.getResourceId
-import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RowItems(item: DailyForecast, index: Int) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isSelected = selectedItemId.intValue == index
+    val isSelected = w_selectedItemId.intValue == index
     Card(modifier = Modifier
         .padding(6.dp)
         .height(190.dp)
@@ -47,7 +48,7 @@ fun RowItems(item: DailyForecast, index: Int) {
         .clickable(
             interactionSource = interactionSource,
             indication = null
-        ) { if (!isSelected) selectedItemId.intValue = index },
+        ) { if (!isSelected) w_selectedItemId.intValue = index },
         shape = RoundedCornerShape(50.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
