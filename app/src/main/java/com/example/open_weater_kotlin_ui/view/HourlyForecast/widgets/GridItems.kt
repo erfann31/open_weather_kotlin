@@ -77,18 +77,32 @@ fun GridItems(item: MutableMap<String, Any?>) {
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
+                (item["txt1"] as String?)?.let {
+                    Text(
+                        text = it,
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_bold))
+                        ),
+                    )
+                }
 
-            (item["txt1"] as String?)?.let {
-                Text(
-                    text = it,
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_bold))
-                    ),
-                )
+                (item["txt3"] as String?)?.let {
+                    Text(
+                        text = it,
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                        ),
+                    )
+                }
             }
+
 
             Spacer(modifier = Modifier.height(6.dp))
 

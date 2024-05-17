@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.entities.HourlyForecast
 import com.example.open_weater_kotlin_ui.models.utils.Util.getResourceId
+import com.example.open_weater_kotlin_ui.view.HourlyForecast.metric
 import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
 
 
@@ -75,16 +77,29 @@ fun RowItems(item: HourlyForecast, index: Int) {
                 ), contentDescription = null,
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
+            Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(
+                    text = "${item.main!!.temp?.toInt().toString()}°",
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_bold))
+                    )
+                )
 
-            Text(
-                text = "${item.main!!.temp?.toInt().toString()}°",
-                style = TextStyle(
-                    color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))
-                ),
-            )
+                Text(
+                    text = if (metric.value=="℃") "c" else "F",
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                    )
+                )
+            }
+
 
         }
 

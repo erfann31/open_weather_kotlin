@@ -51,6 +51,7 @@ import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.RowItems
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val selectedItemId = mutableIntStateOf(0)
+val metric= mutableStateOf("℃")
 
 @Composable
 fun HourlyForecastScreen(
@@ -82,29 +83,33 @@ fun HourlyForecastScreen(
         val box1 = mutableMapOf<String, Any?>(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
-            "txt1" to "${"%.1f".format(selectedItem?.main?.feelsLike)}°",
-            "txt2" to "${"%.1f".format(selectedItem?.main?.tempMax)}° / ${"%.1f".format(selectedItem?.main?.tempMin)}°"
+            "txt1" to "%.1f".format(selectedItem?.main?.feelsLike),
+            "txt2" to "${"%.1f".format(selectedItem?.main?.tempMax)}° / ${"%.1f".format(selectedItem?.main?.tempMin)}°",
+            "txt3" to " ${metric.value}"
         )
 
         val box2 = mutableMapOf<String, Any?>(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
-            "txt1" to "${selectedItem?.main?.humidity}%",
-            "txt2" to selectedItem?.main?.humidity?.let { getHumidityType(it.toInt()) }
+            "txt1" to selectedItem?.main?.humidity.toString(),
+            "txt2" to selectedItem?.main?.humidity?.let { getHumidityType(it.toInt())},
+            "txt3" to " %"
         )
 
         val box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to "${"%.1f".format(selectedItem?.wind?.speed)} km/h",
-            "txt2" to "to ${selectedItem?.wind?.deg?.let { getGeographicalDirection(it) }}"
+            "txt1" to "%.1f".format(selectedItem?.wind?.speed),
+            "txt2" to "to ${selectedItem?.wind?.deg?.let { getGeographicalDirection(it) }}",
+            "txt3" to " km/h"
         )
 
         val box4 = mutableMapOf<String, Any?>(
             "title" to " Cloud Cover",
             "icon" to R.drawable.cloud, // Use resource ID directly
-            "txt1" to "${selectedItem?.clouds?.all}%",
-            "txt2" to selectedItem?.weather?.getOrNull(0)?.description
+            "txt1" to selectedItem?.clouds?.all.toString(),
+            "txt2" to selectedItem?.weather?.getOrNull(0)?.description,
+            "txt3" to " %"
         )
 
         val boxList = mutableListOf(box1, box2, box3, box4)
@@ -143,14 +148,24 @@ fun HourlyForecastScreen(
                         )
                     )
                 }
-                Row(horizontalArrangement = Arrangement.SpaceBetween)
+                Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom)
                 {
                     Text(
-                        text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
+                        text ="${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                        )
+                    )
+
+                    Text(
+                        text = if (metric.value=="℃") "c" else "F",
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_light))
                         )
                     )
