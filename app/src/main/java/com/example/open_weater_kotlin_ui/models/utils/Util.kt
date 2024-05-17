@@ -1,12 +1,17 @@
 package com.example.open_weater_kotlin_ui.models.utils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.open_weater_kotlin_ui.R
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 object Util {
@@ -57,23 +62,27 @@ object Util {
         val resourceName = "ic${iconName.substring(0, 2)}d"
         return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
     }
-    fun convertMillisToDate(timestamp: Long):Long {
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        return sdf.format(Date(timestamp)).toLong()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertMillisToDate(timestamp: Long): String {
+       val dt= LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault())
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return dt.format(formatter)
     }
-    fun getDayOfWeek(timestamp: Long): String {
+    fun getDayOfWeek(timestamp: String): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = sdf.parse(timestamp)
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timestamp
+        calendar.time = date!!
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
         return when (dayOfWeek) {
-            Calendar.SUNDAY -> "Sunday"
-            Calendar.MONDAY -> "Monday"
-            Calendar.TUESDAY -> "Tuesday"
-            Calendar.WEDNESDAY -> "Wednesday"
-            Calendar.THURSDAY -> "Thursday"
-            Calendar.FRIDAY -> "Friday"
-            Calendar.SATURDAY -> "Saturday"
+            Calendar.SUNDAY -> "Sun"
+            Calendar.MONDAY -> "Mon"
+            Calendar.TUESDAY -> "Tue"
+            Calendar.WEDNESDAY -> "Wed"
+            Calendar.THURSDAY -> "Thu"
+            Calendar.FRIDAY -> "Fri"
+            Calendar.SATURDAY -> "Sat"
             else -> ""
         }
     }
