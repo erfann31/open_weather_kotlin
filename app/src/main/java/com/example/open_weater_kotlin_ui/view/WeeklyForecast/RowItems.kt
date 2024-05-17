@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -80,15 +81,28 @@ fun RowItems(item: DailyForecast, index: Int) {
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
 
-            Text(
-                text = "${item.temp?.day?.toInt().toString()}°",
-                style = TextStyle(
-                    color = if (isSelected) colorResource(R.color.customCard) else Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_bold))
-                ),
-            )
+            Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(
+                    text = "${item.temp?.day?.toInt().toString()}°",
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_bold))
+                    )
+                )
+
+                Text(
+                    text = if (metric.value=="℃") "c" else "F",
+                    style = TextStyle(
+                        color = if (isSelected) colorResource(R.color.customCard) else Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                    )
+                )
+            }
 
         }
 

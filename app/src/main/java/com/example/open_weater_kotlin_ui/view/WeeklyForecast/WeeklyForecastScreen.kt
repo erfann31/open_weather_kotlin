@@ -52,7 +52,7 @@ import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.GridItems
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val w_selectedItemId = mutableIntStateOf(0)
-
+val metric= mutableStateOf("℃")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeeklyForecastScreen(
@@ -86,28 +86,32 @@ fun WeeklyForecastScreen(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
             "txt1" to "${"%.1f".format(w_selectedItem?.feelsLike?.day)}°",
-            "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°"
+            "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°",
+            "txt3" to " ${metric.value}"
         )
 
         val w_box2 = mutableMapOf<String, Any?>(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
-            "txt1" to "${w_selectedItem?.humidity}%",
-            "txt2" to w_selectedItem?.humidity?.let { getHumidityType(it.toInt()) }
+            "txt1" to w_selectedItem?.humidity.toString(),
+            "txt2" to w_selectedItem?.humidity?.let { getHumidityType(it.toInt()) },
+            "txt3" to " %"
         )
 
         val w_box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to "${"%.1f".format(w_selectedItem?.speed)} km/h",
-            "txt2" to "to ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}"
+            "txt1" to "%.1f".format(w_selectedItem?.speed),
+            "txt2" to "to ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}",
+            "txt3" to " km/h"
         )
 
         val w_box4 = mutableMapOf<String, Any?>(
             "title" to " Cloud Cover",
             "icon" to R.drawable.cloud, // Use resource ID directly
-            "txt1" to "${w_selectedItem?.clouds}%",
-            "txt2" to w_selectedItem?.weather?.getOrNull(0)?.description
+            "txt1" to w_selectedItem?.clouds.toString(),
+            "txt2" to w_selectedItem?.weather?.getOrNull(0)?.description,
+            "txt3" to " %"
         )
 
         val w_boxList = mutableListOf(w_box1, w_box2, w_box3, w_box4)
@@ -146,7 +150,7 @@ fun WeeklyForecastScreen(
                         )
                     )
                 }
-                Row(horizontalArrangement = Arrangement.SpaceBetween)
+                Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom)
                 {
                     Text(
                         text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()}°",
@@ -154,6 +158,16 @@ fun WeeklyForecastScreen(
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                        )
+                    )
+
+                    Text(
+                        text = if (metric.value=="℃") "c" else "F",
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_light))
                         )
                     )
