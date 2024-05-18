@@ -101,8 +101,8 @@ fun ChangeLocationScreen(
         )
         {
             RoundedTextField(
-                textColor = Color.Black,
-                cursurColor = Color.Black,
+                textColor = colorResource(R.color.customBlue),
+                cursurColor = colorResource(R.color.customBlue),
                 containerColor = Color.White,
                 borderColor = Color.Transparent,
                 isRounded = true,
@@ -142,22 +142,26 @@ fun ChangeLocationScreen(
                 } else {
                     items(locationsName) { cityName ->
                         CityWidget(
-                           text = cityName,
+                            text = cityName,
                             onClick = {
                                 isLoading = true
                                 viewModel.getLocationCoordinates(cityName)
                             },
+                            isAdd = true,
+                            iconOnClick = {
+                                viewModel.addCityToFile(context, cityName)
+                            }
                         )
                     }
                     item {
-                        if (!locationsName.isEmpty()) {
-                            Divider()
+                        if (locationsName.isNotEmpty()) {
+                            Divider(color = Color.White)
                             Spacer(Modifier.height(10.dp))
-
                         }
                     }
                     items(logs.value) { cityName ->
-                        CityWidget( isEdit = true, text = cityName,
+                        CityWidget(
+                            isEdit = true, text = cityName,
                             iconOnClick = {
                                 viewModel.deleteCityFromFile(context, cityName)
                             },
@@ -168,23 +172,10 @@ fun ChangeLocationScreen(
                         )
                     }
                     item {
-                        if (!logs.value.isEmpty()) {
-                            Divider()
+                        if (logs.value.isNotEmpty()) {
+                            Divider(color = Color.White)
                             Spacer(Modifier.height(10.dp))
                         }
-                    }
-                    item {
-                        CityWidget( isAdd = true,
-                            textFieldValue = addNewFavValue,
-                            onTextChanged = {
-                                    newText ->
-                                addNewFavValue = newText
-                            },
-                            iconOnClick = {
-                                viewModel.addCityToFile(context, addNewFavValue)
-                                addNewFavValue=""
-                            }
-                        )
                     }
                     item {
                         Spacer(modifier = Modifier.height(10.dp))
@@ -214,11 +205,10 @@ fun ChangeLocationScreen(
                     }
                     item {
                         //todo delete
-                        Spacer(modifier = Modifier.height(10.dp))
                         TextButton(modifier = Modifier
                             .align(alignment = Alignment.CenterHorizontally)
                             .fillMaxWidth(), onClick = {
-         navHostController.navigate("weekly_forecast")
+                            navHostController.navigate("weekly_forecast")
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic01d),
