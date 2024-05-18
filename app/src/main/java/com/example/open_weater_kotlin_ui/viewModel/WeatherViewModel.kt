@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.models.WeatherRepository
-import com.example.open_weater_kotlin_ui.models.entities.CityItem
-import com.example.open_weater_kotlin_ui.models.entities.CurrentWeather
-import com.example.open_weater_kotlin_ui.models.entities.ForecastDaily
-import com.example.open_weater_kotlin_ui.models.entities.ForecastHourly
-import com.example.open_weater_kotlin_ui.models.entities.LocationCoordinate
-import com.example.open_weater_kotlin_ui.models.utils.readCitiesFromFile
+import com.example.open_weater_kotlin_ui.model.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.entities.CityItem
+import com.example.open_weater_kotlin_ui.model.entities.CurrentWeather
+import com.example.open_weater_kotlin_ui.model.entities.ForecastDaily
+import com.example.open_weater_kotlin_ui.model.entities.ForecastHourly
+import com.example.open_weater_kotlin_ui.model.entities.LocationCoordinate
+import com.example.open_weater_kotlin_ui.model.utils.readCitiesFromFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,8 @@ import java.io.File
 @OptIn(FlowPreview::class)
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
     var listener: LocationInfoListener? = null
-
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
     private val _locationDetails = MutableLiveData<List<LocationCoordinate>>()
     val locationDetails: LiveData<List<LocationCoordinate>> = _locationDetails
 
@@ -54,6 +55,10 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     private val locationNameFlow = MutableStateFlow("")
 
     private val _citiesNameFromFile = MutableLiveData<List<String>>()
+
+    fun startLoading() {
+        _loading.value = true
+    }
 
     fun addCityToFile(context: Context, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -134,6 +139,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     }
 
     fun setLatLon(latitude: Double, longitude: Double) {
+        _loading.value = true
         _lat.value = latitude
         _lon.value = longitude
         updateWeatherData(latitude, longitude)
@@ -202,6 +208,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         if (hourlyForecastResponse.isSuccessful) {
             _hourlyForecast.value = hourlyForecastResponse.body()
         }
+        _loading.value = false
         listener?.onLocationInfoFetched()
     }
 }
