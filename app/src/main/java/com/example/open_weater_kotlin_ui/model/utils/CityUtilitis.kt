@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.models.utils
+package com.example.open_weater_kotlin_ui.model.utils
 
 import android.content.Context
 import android.os.FileObserver

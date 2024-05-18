@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.models.entities
+package com.example.open_weater_kotlin_ui.model.entities
 
 
 import com.google.gson.annotations.SerializedName

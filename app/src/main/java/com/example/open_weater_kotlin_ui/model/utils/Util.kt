@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.models.utils
+package com.example.open_weater_kotlin_ui.model.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi

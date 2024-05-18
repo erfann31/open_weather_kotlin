@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.models.Intent
+package com.example.open_weater_kotlin_ui.model.Intent
 
 import android.content.Context
 import android.content.Intent

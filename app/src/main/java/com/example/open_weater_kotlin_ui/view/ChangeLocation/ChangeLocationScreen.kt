@@ -39,9 +39,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.open_weater_kotlin_ui.R
-import com.example.open_weater_kotlin_ui.models.Intent.goToMap
-import com.example.open_weater_kotlin_ui.models.utils.LogFileObserver
-import com.example.open_weater_kotlin_ui.models.utils.readLogsFromFile
+import com.example.open_weater_kotlin_ui.model.Intent.goToMap
+import com.example.open_weater_kotlin_ui.model.utils.LogFileObserver
+import com.example.open_weater_kotlin_ui.model.utils.readLogsFromFile
 import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.CityWidget
 import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.RoundedTextField
 import com.example.open_weater_kotlin_ui.viewModel.LocationInfoListener

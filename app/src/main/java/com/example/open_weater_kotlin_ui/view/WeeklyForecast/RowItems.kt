@@ -31,10 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
-import com.example.open_weater_kotlin_ui.models.entities.DailyForecast
-import com.example.open_weater_kotlin_ui.models.utils.Util
-import com.example.open_weater_kotlin_ui.models.utils.Util.convertMillisToDate
-import com.example.open_weater_kotlin_ui.models.utils.Util.getDayOfWeek
+import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
+import com.example.open_weater_kotlin_ui.model.utils.Util
+import com.example.open_weater_kotlin_ui.model.utils.Util.convertMillisToDate
+import com.example.open_weater_kotlin_ui.model.utils.Util.getDayOfWeek
 
 
 @RequiresApi(Build.VERSION_CODES.O)

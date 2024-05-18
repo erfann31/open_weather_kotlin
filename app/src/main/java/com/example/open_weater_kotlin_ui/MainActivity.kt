@@ -25,8 +25,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.models.WeatherRepository
-import com.example.open_weater_kotlin_ui.models.utils.RetrofitInstance
+import com.example.open_weater_kotlin_ui.model.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
@@ -77,6 +77,7 @@ class MainActivity : ComponentActivity() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(this, "Please enable GPS", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+
         } else {
             val apiInterface = RetrofitInstance.api
             val weatherRepository = WeatherRepository(apiInterface)
@@ -86,7 +87,50 @@ class MainActivity : ComponentActivity() {
             requestLocationUpdates(viewModel)
         }
     }
+    private fun requestLocationUpdates(viewModel: WeatherViewModel) {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, object : android.location.LocationListener {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onLocationChanged(location: Location) {
 
+                val latitude = location.latitude
+                val longitude = location.longitude
+
+                viewModel.setLatLon(latitude, longitude)
+
+                if (latitude != null && longitude != null) {
+                    setContent {
+                        MyApplicationTheme {
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = MaterialTheme.colorScheme.background
+                            ) {
+                                Navigator(viewModel)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onProviderDisabled(provider: String) {}
+
+            override fun onProviderEnabled(provider: String) {}
+
+            @Deprecated("Deprecated in Java")
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            }
+        }, null)
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -172,50 +216,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    private fun requestLocationUpdates(viewModel: WeatherViewModel) {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, object : android.location.LocationListener {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onLocationChanged(location: Location) {
 
-                val latitude = location.latitude
-                val longitude = location.longitude
-
-                viewModel.setLatLon(latitude, longitude)
-
-                if (latitude != null && longitude != null) {
-                    setContent {
-                        MyApplicationTheme {
-                            Surface(
-                                modifier = Modifier.fillMaxSize(),
-                                color = MaterialTheme.colorScheme.background
-                            ) {
-                                Navigator(viewModel)
-                            }
-                        }
-                    }
-                }
-            }
-
-            override fun onProviderDisabled(provider: String) {}
-
-            override fun onProviderEnabled(provider: String) {}
-
-            @Deprecated("Deprecated in Java")
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            }
-        }, null)
-    }
 }
 
 @Composable
