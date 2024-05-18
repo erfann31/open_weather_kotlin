@@ -66,7 +66,7 @@ fun CityWidget(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (showTextField) {
-                    RoundedSearchTextField(
+                    RoundedTextField(
                         text = textFieldValue,
                         onTextChanged = { onTextChanged(it) },
                         placeholder = "Type name of city here...",

@@ -43,7 +43,7 @@ import com.example.open_weater_kotlin_ui.models.Intent.goToMap
 import com.example.open_weater_kotlin_ui.models.utils.LogFileObserver
 import com.example.open_weater_kotlin_ui.models.utils.readLogsFromFile
 import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.CityWidget
-import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.RoundedSearchTextField
+import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.RoundedTextField
 import com.example.open_weater_kotlin_ui.viewModel.LocationInfoListener
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
@@ -100,7 +100,7 @@ fun ChangeLocationScreen(
             modifier = Modifier.padding(10.dp)
         )
         {
-            RoundedSearchTextField(
+            RoundedTextField(
                 placeholder = "Search for a city...",
                 text = locationName,
                 onSearchClicked = {
