@@ -2,6 +2,7 @@ package com.example.open_weater_kotlin_ui.view.ChangeLocation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +40,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.models.Intent.goToMap
+import com.example.open_weater_kotlin_ui.models.utils.LogFileObserver
+import com.example.open_weater_kotlin_ui.models.utils.readLogsFromFile
 import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.CityWidget
 import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.RoundedSearchTextField
 import com.example.open_weater_kotlin_ui.viewModel.LocationInfoListener
@@ -46,6 +53,23 @@ fun ChangeLocationScreen(
     viewModel: WeatherViewModel = viewModel(),
 ) {
     val context = LocalContext.current
+    val logs = remember { mutableStateOf(readLogsFromFile(context)) }
+    var addNewFavValue by remember { mutableStateOf("") }
+    val locationsName by viewModel.locationsName.observeAsState(emptyList())
+    var locationName by remember { mutableStateOf("") }
+
+    val observer = remember {
+        LogFileObserver(context) {
+            logs.value = readLogsFromFile(context)
+        }
+    }
+
+    DisposableEffect(context) {
+        observer.startWatching()
+        onDispose {
+            observer.stopWatching()
+        }
+    }
     var isLoading by remember { mutableStateOf(false) }
     viewModel.listener = object : LocationInfoListener {
         override fun onLocationInfoFetched() {
@@ -69,12 +93,11 @@ fun ChangeLocationScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        var locationName by remember { mutableStateOf("") }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.padding( 10.dp)
+            modifier = Modifier.padding(10.dp)
         )
         {
             RoundedSearchTextField(
@@ -86,39 +109,80 @@ fun ChangeLocationScreen(
                 },
                 onTextChanged = { newText ->
                     locationName = newText
+                    viewModel.updateLocationName(locationName)
                 },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.dp)
+                    .padding(horizontal = 12.dp),
+                showIcon = true,
+                textSize = 16.sp
             )
             Spacer(modifier = Modifier.height(16.dp))
-            if (isLoading) {
-                LazyColumn(
-                    Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            LazyColumn(Modifier.fillMaxSize()) {
+                if (isLoading) {
                     item {
-                        CircularProgressIndicator(color = Color.White)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.height(30.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
-                }
-            } else {
-                LazyColumn(Modifier.fillMaxSize()) {
+                } else {
+                    items(locationsName) { cityName ->
+                        CityWidget(
+                           text = cityName,
+                            onClick = {
+                                isLoading = true
+                                viewModel.getLocationCoordinates(cityName)
+                            },
+                        )
+                    }
                     item {
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
-                        CityWidget(navHostController)
+                        if (!locationsName.isEmpty()) {
+                            Divider()
+                            Spacer(Modifier.height(10.dp))
 
+                        }
+                    }
+                    items(logs.value) { cityName ->
+                        CityWidget( isEdit = true, text = cityName,
+                            iconOnClick = {
+                                viewModel.deleteCityFromFile(context, cityName)
+                            },
+                            onClick = {
+                                isLoading = true
+                                viewModel.getLocationCoordinates(cityName)
+                            },
+                        )
                     }
                     item {
-                        CityWidget(navHostController, isAdd = true)
-
+                        if (!logs.value.isEmpty()) {
+                            Divider()
+                            Spacer(Modifier.height(10.dp))
+                        }
                     }
                     item {
+                        CityWidget( isAdd = true,
+                            textFieldValue = addNewFavValue,
+                            onTextChanged = {
+                                    newText ->
+                                addNewFavValue = newText
+                            },
+                            iconOnClick = {
+                                viewModel.addCityToFile(context, addNewFavValue)
+                                addNewFavValue=""
+                            }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
                         TextButton(modifier = Modifier
                             .align(alignment = Alignment.CenterHorizontally)
                             .fillMaxWidth(), onClick = {
@@ -134,6 +198,30 @@ fun ChangeLocationScreen(
                             )
                             Text(
                                 text = " Go to Map",
+                                style = TextStyle(
+                                    color = colorResource(id = R.color.white),
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                )
+                            )
+                        }
+                    }
+                    item {
+                        //todo delete
+                        Spacer(modifier = Modifier.height(10.dp))
+                        TextButton(modifier = Modifier
+                            .align(alignment = Alignment.CenterHorizontally)
+                            .fillMaxWidth(), onClick = {
+         navHostController.navigate("weekly_forecast")
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic01d),
+                                contentDescription = null,
+                                tint = colorResource(id = R.color.white)
+                            )
+                            Text(
+                                text = "weakly",
                                 style = TextStyle(
                                     color = colorResource(id = R.color.white),
                                     fontWeight = FontWeight.Normal,
