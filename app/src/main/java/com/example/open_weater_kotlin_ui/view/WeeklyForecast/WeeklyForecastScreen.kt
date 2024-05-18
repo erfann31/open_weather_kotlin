@@ -39,6 +39,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -142,6 +143,8 @@ fun WeeklyForecastScreen(
                 dailyForecast?.city?.name?.let {
                     Text(
                         text = it,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.Normal,
