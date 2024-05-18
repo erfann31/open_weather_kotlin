@@ -1,7 +1,6 @@
 package com.example.open_weater_kotlin_ui
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -15,7 +14,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,8 +26,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.model.WeatherRepository
-import com.example.open_weater_kotlin_ui.model.broadcast_receiver.GPSStatusReceiver
+import com.example.open_weater_kotlin_ui.model.repository.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.broadcast.GPSStatusReceiver
 import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme

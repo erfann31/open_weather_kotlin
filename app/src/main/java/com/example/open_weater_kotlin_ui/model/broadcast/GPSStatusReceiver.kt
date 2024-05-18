@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.model.broadcast_receiver
+package com.example.open_weater_kotlin_ui.model.broadcast
 
 import android.content.BroadcastReceiver
 import android.content.Context

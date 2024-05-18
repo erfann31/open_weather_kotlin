@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.model.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.repository.WeatherRepository
 import com.example.open_weater_kotlin_ui.model.entities.CityItem
 import com.example.open_weater_kotlin_ui.model.entities.CurrentWeather
 import com.example.open_weater_kotlin_ui.model.entities.ForecastDaily

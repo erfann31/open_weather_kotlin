@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.model
+package com.example.open_weater_kotlin_ui.model.repository
 
 import com.example.open_weater_kotlin_ui.model.domain.ApiInterface
 
