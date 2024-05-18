@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.open_weater_kotlin_ui.models.WeatherRepository
-
 import com.example.open_weater_kotlin_ui.models.entities.CurrentWeather
 import com.example.open_weater_kotlin_ui.models.entities.ForecastDaily
 import com.example.open_weater_kotlin_ui.models.entities.ForecastHourly
@@ -14,6 +13,13 @@ import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
     var listener: LocationInfoListener? = null
+
+    private val _lat = MutableLiveData<Double>()
+    val lat: LiveData<Double> = _lat
+
+    private val _lon = MutableLiveData<Double>()
+    val lon: LiveData<Double> = _lon
+
     private val _locationCoordinates = MutableLiveData<List<LocationCoordinate>>()
     val locationCoordinates: LiveData<List<LocationCoordinate>> = _locationCoordinates
 
@@ -25,6 +31,12 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
 
     private val _hourlyForecast = MutableLiveData<ForecastHourly>()
     val hourlyForecast: LiveData<ForecastHourly> = _hourlyForecast
+
+    fun setLatLon(latitude: Double, longitude: Double) {
+        _lat.value = latitude
+        _lon.value = longitude
+        updateWeatherData(latitude, longitude)
+    }
 
     fun updateWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch {
@@ -39,6 +51,8 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                 _locationCoordinates.value = response.body()
                 val coordinates = response.body()?.firstOrNull()
                 if (coordinates != null) {
+                    _lat.value = coordinates.lat
+                    _lon.value = coordinates.lon
                     fetchWeatherData(coordinates.lat, coordinates.lon)
                 }
             } else {
