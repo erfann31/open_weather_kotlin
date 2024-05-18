@@ -47,7 +47,7 @@ fun CityWidget(
     isAdd: Boolean = false,
 ) {
 
-    var showTextField by remember { mutableStateOf(false) }
+    val showTextField by remember { mutableStateOf(false) }
 
     Surface(
         onClick = onClick,
@@ -85,6 +85,7 @@ fun CityWidget(
                     )
                 } else {
                     Text(
+                        modifier = Modifier.width(260.dp),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         text = text,
@@ -103,16 +104,7 @@ fun CityWidget(
                 if (isEdit || isAdd) {
                     IconButton(
                         onClick = {
-                            if (isAdd) {
-                                if (showTextField) {
                                     iconOnClick()
-                                    showTextField = false
-                                } else {
-                                    showTextField = true
-                                }
-                            } else {
-                                iconOnClick()
-                            }
                         },
                         modifier = Modifier
                             .padding(horizontal = 10.dp, vertical = 8.dp)
@@ -130,7 +122,7 @@ fun CityWidget(
                                 }
                             },
                             contentDescription = "bottom_bar_item_active",
-                            tint = Color(0xFFE3E3E3)
+                            tint = Color(0xFFFFFFFF)
                         )
                     }
                 }
