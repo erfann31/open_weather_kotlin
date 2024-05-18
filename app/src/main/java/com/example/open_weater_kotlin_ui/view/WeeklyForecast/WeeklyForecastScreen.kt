@@ -45,11 +45,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.open_weater_kotlin_ui.R
-import com.example.open_weater_kotlin_ui.models.entities.DailyForecast
-import com.example.open_weater_kotlin_ui.models.utils.Util.getGeographicalDirection
-import com.example.open_weater_kotlin_ui.models.utils.Util.getHumidityType
-import com.example.open_weater_kotlin_ui.models.utils.Util.getStatus
+import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
+import com.example.open_weater_kotlin_ui.model.utils.Util.getGeographicalDirection
+import com.example.open_weater_kotlin_ui.model.utils.Util.getHumidityType
+import com.example.open_weater_kotlin_ui.model.utils.Util.getStatus
 import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.GridItems
+import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val w_selectedItemId = mutableIntStateOf(0)
@@ -64,8 +65,10 @@ fun WeeklyForecastScreen(
 
     if (dailyForecast == null) {
         // نمایش پیام Loading
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = colorResource(R.color.customCard))
+        GradientBackground {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = Color.White)
+            }
         }
     } else {
         val dailyForecasts: List<DailyForecast>? = dailyForecast?.list
