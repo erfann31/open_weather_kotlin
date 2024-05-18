@@ -1,8 +1,10 @@
 package com.example.open_weater_kotlin_ui
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -13,6 +15,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.open_weater_kotlin_ui.model.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.broadcast_receiver.GPSStatusReceiver
 import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
@@ -45,12 +49,20 @@ class MainActivity : ComponentActivity() {
         if (isGranted) {
             checkGPS()
         } else {
-            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()        }
+            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+        }
     }
+
+    private lateinit var gpsStatusReceiver: GPSStatusReceiver
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        gpsStatusReceiver = GPSStatusReceiver()
+        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+        registerReceiver(gpsStatusReceiver, filter)
+
         val intent = intent
         setContent {
             WeatherApp {
@@ -71,8 +83,16 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(gpsStatusReceiver)
+    }
 
     private fun checkGPS() {
+        if (isGPSEnabled()){
+            Toast.makeText(this, "Getting information from GPS...", Toast.LENGTH_SHORT).show()
+        }
+
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(this, "Please enable GPS", Toast.LENGTH_SHORT).show()
@@ -87,6 +107,12 @@ class MainActivity : ComponentActivity() {
             requestLocationUpdates(viewModel)
         }
     }
+
+    private fun isGPSEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
     private fun requestLocationUpdates(viewModel: WeatherViewModel) {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
