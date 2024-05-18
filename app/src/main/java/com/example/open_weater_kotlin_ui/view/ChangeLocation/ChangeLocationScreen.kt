@@ -101,6 +101,11 @@ fun ChangeLocationScreen(
         )
         {
             RoundedTextField(
+                textColor = Color.Black,
+                cursurColor = Color.Black,
+                containerColor = Color.White,
+                borderColor = Color.Transparent,
+                isRounded = true,
                 placeholder = "Search for a city...",
                 text = locationName,
                 onSearchClicked = {

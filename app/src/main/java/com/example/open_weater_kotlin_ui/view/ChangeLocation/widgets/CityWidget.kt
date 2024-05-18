@@ -67,14 +67,21 @@ fun CityWidget(
             ) {
                 if (showTextField) {
                     RoundedTextField(
+                        isRounded = true,
+                        placeholderColor = Color(0xFFffffff),
                         text = textFieldValue,
                         onTextChanged = { onTextChanged(it) },
-                        placeholder = "Type name of city here...",
+                        placeholder = "Type Here...",
                         modifier = Modifier
                             .weight(1f)
-                            .height(50.dp).padding(end =  40.dp),
+                            .height(50.dp)
+                            .padding(end = 40.dp),
                         textSize = 12.sp,
-                        showIcon = false
+                        showIcon = false,
+                        containerColor = Color.Transparent,
+                        borderColor = Color.White,
+                        textColor = Color.White,
+                        cursurColor = Color.White
                     )
                 } else {
                     Text(

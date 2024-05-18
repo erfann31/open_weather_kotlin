@@ -36,6 +36,12 @@ import androidx.compose.ui.focus.onFocusChanged
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RoundedTextField(
+    placeholderColor: Color=Color(0xFF929292),
+    cursurColor: Color,
+    textColor: Color,
+    containerColor:Color,
+    borderColor: Color,
+    isRounded:Boolean,
     modifier: Modifier = Modifier,
     text: String,
     showIcon: Boolean,
@@ -44,7 +50,10 @@ fun RoundedTextField(
     onSearchClicked: () -> Unit = {},
     onTextChanged: (String) -> Unit,
 ) {
-    val shape: Shape = RoundedCornerShape(percent = 50)
+    var shape= RoundedCornerShape(5)
+    if (isRounded){
+        shape = RoundedCornerShape(percent = 50)
+    }
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -63,7 +72,7 @@ fun RoundedTextField(
                     R.font.poppins,
                 ),
             ),
-            color = Color(0xFF000000),
+            color = textColor,
         ),
         onValueChange = {
             onTextChanged(it)
@@ -86,18 +95,20 @@ fun RoundedTextField(
                             R.font.poppins,
                         ),
                     ),
-                    color = Color(0xFF929292),
+                    color = placeholderColor,
                 )
             )
         },
+
         shape = shape,
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            disabledContainerColor = Color.White,
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
+            cursorColor = cursurColor,
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor =  containerColor,
+            disabledContainerColor =  containerColor,
+            focusedBorderColor = borderColor,
+            unfocusedBorderColor = borderColor,
         ),
         trailingIcon = {
             if (showIcon) {
