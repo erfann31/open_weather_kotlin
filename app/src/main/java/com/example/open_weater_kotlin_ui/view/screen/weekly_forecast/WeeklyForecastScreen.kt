@@ -59,7 +59,6 @@ import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 val w_selectedItemId = mutableIntStateOf(0)
-val metric = mutableStateOf("℃")
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -67,6 +66,26 @@ fun WeeklyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
+    val isMetric = viewModel.isMetric.value
+    val temp = remember {
+        mutableStateOf(
+            if (isMetric) {
+                "℃"
+            } else {
+                "°F"
+            }
+        )
+    }
+    val windSpeed = remember {
+        mutableStateOf(
+            if (isMetric) {
+                "km/h"
+            } else {
+                "mph"
+            }
+        )
+    }
+
     val dailyForecast by viewModel.dailyForecast.observeAsState()
 
     if (dailyForecast == null) {
@@ -97,7 +116,7 @@ fun WeeklyForecastScreen(
             "icon" to R.drawable.temperature, // Use resource ID directly
             "txt1" to "%.1f".format(w_selectedItem?.feelsLike?.day),
             "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°",
-            "txt3" to " ${metric.value}"
+            "txt3" to " ${temp.value}"
         )
 
         val w_box2 = mutableMapOf<String, Any?>(
@@ -113,7 +132,7 @@ fun WeeklyForecastScreen(
             "icon" to R.drawable.wind, // Use resource ID directly
             "txt1" to "%.1f".format(w_selectedItem?.speed),
             "txt2" to "to ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}",
-            "txt3" to " km/h"
+            "txt3" to " ${windSpeed.value}"
         )
 
         val w_box4 = mutableMapOf<String, Any?>(
@@ -141,8 +160,7 @@ fun WeeklyForecastScreen(
         )
         {
             Column(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -165,7 +183,10 @@ fun WeeklyForecastScreen(
                             )
                         )
                     }
-                    Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom)
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Bottom,
+                    )
                     {
                         Text(
                             text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()}°",
@@ -178,20 +199,20 @@ fun WeeklyForecastScreen(
                         )
 
                         Text(
-                            text = if (metric.value == "℃") "c" else "F",
-                            style = TextStyle(
+                            text = if (temp.value == "℃") "c" else "F", style = TextStyle(
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
                                 fontFamily = FontFamily(Font(R.font.poppins_light))
                             )
                         )
+
                         Spacer(modifier = Modifier.width(8.dp))
+
                         val id = dailyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
                         if (id != null) {
                             Text(
-                                text = if (id == 800) "Clear" else getStatus(id / 100),
-                                style = TextStyle(
+                                text = if (id == 800) "Clear" else getStatus(id / 100), style = TextStyle(
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp,
@@ -203,8 +224,7 @@ fun WeeklyForecastScreen(
 
                     TextButton(onClick = { navHostController.navigate("change_location") }) {
                         Icon(
-                            modifier = Modifier
-                                .scale(0.8f),
+                            modifier = Modifier.scale(0.8f),
                             painter = painterResource(id = R.drawable.location),
                             contentDescription = null,
                             tint = colorResource(id = R.color.customBlue)
@@ -224,19 +244,22 @@ fun WeeklyForecastScreen(
 
 
                 LazyRow(
-                    modifier = Modifier
-                        .padding(10.dp)
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     items(items = dailyForecasts ?: emptyList()) { items ->
                         if (dailyForecasts != null) {
-                            RowItems(item = items, index = dailyForecasts.indexOf(items))
+                            RowItems(
+                                item = items,
+                                index = dailyForecasts.indexOf(items),
+                                viewModel,
+                            )
                         }
                     }
 
                 }
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), modifier = Modifier
-                        .padding(10.dp)
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.padding(10.dp),
                 ) {
                     items(w_boxList) { item ->
                         GridItems(item = item)
