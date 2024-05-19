@@ -34,8 +34,7 @@ import com.example.open_weater_kotlin_ui.R
 fun GridItems(item: MutableMap<String, Any?>) {
 
     Card(
-        modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 5.dp),
+        modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
         elevation = CardDefaults.cardElevation(10.dp)
@@ -51,7 +50,9 @@ fun GridItems(item: MutableMap<String, Any?>) {
             Icon(
                 modifier = Modifier
                     .size(32.dp)
-                    .scale(1.3f), painter = painterResource(id = item["icon"] as Int), contentDescription = null,
+                    .scale(1.3f),
+                painter = painterResource(id = item["icon"] as Int),
+                contentDescription = "item",
                 tint = Color.White
             )
 
@@ -77,7 +78,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
                 (item["txt1"] as String?)?.let {
                     Text(
                         text = it,

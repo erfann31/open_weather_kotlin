@@ -17,11 +17,12 @@ import java.util.Locale
 object Convertor {
 
     @Composable
-    fun getResourceId(iconName: String,currentTime: Int): Painter {
-        val suffix=if(currentTime in 6..18 )"d" else "n"
+    fun getResourceId(iconName: String, currentTime: Int): Painter {
+        val suffix = if (currentTime in 6..18) "d" else "n"
         val resourceName = "ic${iconName.substring(0, 2)}${suffix}"
         return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
     }
+
     fun getHumidityType(percentage: Int): String {
         return when {
             percentage in 30..50 -> "Normal "
@@ -30,6 +31,7 @@ object Convertor {
             else -> "Very High"
         }
     }
+
     fun getGeographicalDirection(degree: Int): String {
         return when (degree) {
             in 0..22 -> "North"
@@ -44,6 +46,7 @@ object Convertor {
             else -> "Invalid Degree"
         }
     }
+
     fun getStatus(number: Int): String {
         return when (number) {
             2 -> "Thunderstorm"
@@ -51,21 +54,24 @@ object Convertor {
             5 -> "Rainy"
             6 -> "Snowy"
             7 -> "Misty"
-            8 ->"Cloudy"
+            8 -> "Cloudy"
             else -> ""
         }
     }
+
     @Composable
-    fun getResourceId_weekly(iconName: String,): Painter {
+    fun getResourceId_weekly(iconName: String): Painter {
         val resourceName = "ic${iconName.substring(0, 2)}d"
         return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun convertMillisToDate(timestamp: Long): String {
-       val dt= LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault())
+        val dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault())
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         return dt.format(formatter)
     }
+
     fun getDayOfWeek(timestamp: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val date = sdf.parse(timestamp)
