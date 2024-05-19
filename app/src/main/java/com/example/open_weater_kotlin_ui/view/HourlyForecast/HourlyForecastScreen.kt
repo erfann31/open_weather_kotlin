@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,7 +57,7 @@ import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
 
 val selectedItemId = mutableIntStateOf(0)
-val metric= mutableStateOf("℃")
+val metric = mutableStateOf("℃")
 
 @Composable
 fun HourlyForecastScreen(
@@ -96,7 +100,7 @@ fun HourlyForecastScreen(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
             "txt1" to selectedItem?.main?.humidity.toString(),
-            "txt2" to selectedItem?.main?.humidity?.let { getHumidityType(it.toInt())},
+            "txt2" to selectedItem?.main?.humidity?.let { getHumidityType(it.toInt()) },
             "txt3" to " %"
         )
 
@@ -118,7 +122,7 @@ fun HourlyForecastScreen(
 
         val boxList = mutableListOf(box1, box2, box3, box4)
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -129,57 +133,38 @@ fun HourlyForecastScreen(
                         )
                     )
                 )
-                .padding(top = 6.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(top = 6.dp)
         )
         {
-
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.padding(10.dp)
-            )
-            {
-                hourlyForecast?.city?.name?.let {
-                    Text(
-                        text = it,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            color = Color.White,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 30.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                        )
-                    )
-                }
-                Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom)
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.padding(10.dp)
+                )
                 {
-                    Text(
-                        text ="${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
-                        style = TextStyle(
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_light))
-                        )
-                    )
-
-                    Text(
-                        text = if (metric.value=="℃") "c" else "F",
-                        style = TextStyle(
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_light))
-                        )
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    val id = hourlyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
-                    if (id != null) {
+                    hourlyForecast?.city?.name?.let {
                         Text(
-                            text = if (id == 800) "Clear" else getStatus(id / 100),
+                            text = it,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = TextStyle(
+                                color = Color.White,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 30.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                            )
+                        )
+                    }
+                    Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom)
+                    {
+                        Text(
+                            text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
                             style = TextStyle(
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
@@ -187,53 +172,85 @@ fun HourlyForecastScreen(
                                 fontFamily = FontFamily(Font(R.font.poppins_light))
                             )
                         )
-                    }
-                }
 
-                TextButton(onClick = { navHostController.navigate("change_location") }) {
-                    Icon(
-                        modifier = Modifier
-                            .scale(0.8f),
-                        painter = painterResource(id = R.drawable.location),
-                        contentDescription = null,
-                        tint = colorResource(id = R.color.customBlue)
-                    )
-
-                    Text(
-                        text = "Change Location",
-                        style = TextStyle(
-                            color = colorResource(id = R.color.customBlue),
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                        Text(
+                            text = if (metric.value == "℃") "c" else "F",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_light))
+                            )
                         )
-                    )
-                }
-            }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        val id = hourlyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
+                        if (id != null) {
+                            Text(
+                                text = if (id == 800) "Clear" else getStatus(id / 100),
+                                style = TextStyle(
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppins_light))
+                                )
+                            )
+                        }
+                    }
 
+                    TextButton(onClick = { navHostController.navigate("change_location") }) {
+                        Icon(
+                            modifier = Modifier
+                                .scale(0.8f),
+                            painter = painterResource(id = R.drawable.location),
+                            contentDescription = null,
+                            tint = colorResource(id = R.color.customBlue)
+                        )
 
-            LazyRow(
-                modifier = Modifier
-                    .padding(10.dp)
-            ) {
-                items(items = hourlyForecasts ?: emptyList()) { items ->
-                    if (hourlyForecasts != null) {
-                        RowItems(items, hourlyForecasts.indexOf(items))
+                        Text(
+                            text = "Change Location",
+                            style = TextStyle(
+                                color = colorResource(id = R.color.customBlue),
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                            )
+                        )
                     }
                 }
 
-            }
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), modifier = Modifier
-                    .padding(10.dp)
-            ) {
-                items(boxList) { item ->
-                    GridItems(item = item)
+
+                LazyRow(
+                    modifier = Modifier
+                        .padding(10.dp)
+                ) {
+                    items(items = hourlyForecasts ?: emptyList()) { items ->
+                        if (hourlyForecasts != null) {
+                            RowItems(items, hourlyForecasts.indexOf(items))
+                        }
+                    }
+
+                }
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2), modifier = Modifier
+                        .padding(10.dp)
+                ) {
+                    items(boxList) { item ->
+                        GridItems(item = item)
+                    }
                 }
             }
 
+            IconButton(modifier = Modifier.padding(start = 12.dp, top = 12.dp), onClick = { navHostController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier.size(30.dp)
+                )
+
+            }
         }
     }
-
 }
+
 
