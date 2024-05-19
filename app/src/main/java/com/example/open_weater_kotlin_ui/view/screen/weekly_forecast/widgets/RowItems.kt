@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast
+package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.widgets
 
 
 import android.os.Build
@@ -35,6 +35,8 @@ import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
 import com.example.open_weater_kotlin_ui.model.utils.Convertor
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.convertMillisToDate
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.getDayOfWeek
+import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.metric
+import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.w_selectedItemId
 
 
 @RequiresApi(Build.VERSION_CODES.O)

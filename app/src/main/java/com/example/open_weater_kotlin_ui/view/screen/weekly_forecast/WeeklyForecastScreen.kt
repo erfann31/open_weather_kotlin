@@ -54,6 +54,7 @@ import com.example.open_weater_kotlin_ui.model.utils.Convertor.getGeographicalDi
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.getHumidityType
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.getStatus
 import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.GridItems
+import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.widgets.RowItems
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
