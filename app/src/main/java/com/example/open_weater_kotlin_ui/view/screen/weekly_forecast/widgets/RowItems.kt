@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,13 +36,22 @@ import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
 import com.example.open_weater_kotlin_ui.model.utils.Convertor
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.convertMillisToDate
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.getDayOfWeek
-import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.metric
 import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.w_selectedItemId
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RowItems(item: DailyForecast, index: Int) {
+fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
+    val metric = remember {
+        mutableStateOf(
+            if (viewModel.isMetric.value) {
+                "℃"
+            } else {
+                "°F"
+            }
+        )
+    }
     val interactionSource = remember { MutableInteractionSource() }
     val isSelected = w_selectedItemId.intValue == index
     val date = item.dt?.let { convertMillisToDate(it) }
@@ -95,11 +105,11 @@ fun RowItems(item: DailyForecast, index: Int) {
             }
 
             Icon(
-                modifier = Modifier
-                    .scale(1.8f), painter = Convertor.getResourceId_weekly(
+                modifier = Modifier.scale(1.8f),
+                painter = Convertor.getResourceId_weekly(
                     item.weather?.get(0)?.icon.toString()
                 ),
-                contentDescription = null,
+                contentDescription = "icon",
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
 
