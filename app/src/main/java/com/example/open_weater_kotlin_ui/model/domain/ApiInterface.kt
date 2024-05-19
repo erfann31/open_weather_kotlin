@@ -17,13 +17,6 @@ interface ApiInterface {
         @Query("appid") appid: String
     ): Deferred<Response<List<LocationCoordinate>>>
 
-    @GET("data/2.5/weather?units=metric")
-    fun getCurrentWeatherDataAsync(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("appid") appid: String,
-    ): Deferred<Response<CurrentWeather>>
-
     @GET("geo/1.0/reverse?limit=5")
     fun reverseGeocodingAsync(
         @Query("lat") lat: Double,
@@ -31,17 +24,27 @@ interface ApiInterface {
         @Query("appid") appid: String
     ): Deferred<Response<List<LocationCoordinate>>>
 
-    @GET("data/2.5/forecast/daily?units=metric&cnt=8")
+    @GET("data/2.5/weather")
+    fun getCurrentWeatherDataAsync(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("units") unit: String,
+        @Query("appid") appid: String,
+    ): Deferred<Response<CurrentWeather>>
+
+    @GET("data/2.5/forecast/daily?cnt=8")
     fun getDailyForecastAsync(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
+        @Query("units") unit: String,
         @Query("appid") appid: String
     ): Deferred<Response<ForecastDaily>>
 
-    @GET("data/2.5/forecast?units=metric&cnt=8")
+    @GET("data/2.5/forecast?cnt=8")
     fun getHourlyForecastAsync(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
+        @Query("units") unit: String,
         @Query("appid") appid: String
     ): Deferred<Response<ForecastHourly>>
 }
