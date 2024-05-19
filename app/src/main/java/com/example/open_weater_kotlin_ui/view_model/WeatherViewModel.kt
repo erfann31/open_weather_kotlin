@@ -1,6 +1,7 @@
 package com.example.open_weater_kotlin_ui.view_model
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,6 @@ import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
 import com.example.open_weater_kotlin_ui.model.utils.readCitiesFromFile
 import com.example.open_weater_kotlin_ui.view_model.lisener.LocationInfoListener
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -24,10 +24,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-@OptIn(FlowPreview::class)
 class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewModel() {
     var listener: LocationInfoListener? = null
 
+    var isMetric = mutableStateOf(true)
+        private set
 
     private val _locationDetails = MutableLiveData<List<LocationCoordinate>>()
     val locationDetails: LiveData<List<LocationCoordinate>> = _locationDetails
@@ -57,6 +58,10 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
 
     private val _citiesNameFromFile = MutableLiveData<List<String>>()
 
+    fun toggleUnit() {
+        isMetric.value = !isMetric.value
+        updateWeatherData(lat.value!!, lon.value!!)
+    }
 
     fun addCityToFile(context: Context, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -191,17 +196,19 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     }
 
     private suspend fun fetchWeatherData(lat: Double, lon: Double) {
-        val currentWeatherResponse = repository.getCurrentWeatherData(lat, lon)
+        val unit = if (isMetric.value) "metric" else "imperial"
+
+        val currentWeatherResponse = repository.getCurrentWeatherData(lat, lon, unit)
         if (currentWeatherResponse.isSuccessful) {
             _currentWeather.value = currentWeatherResponse.body()
         }
 
-        val dailyForecastResponse = repository.getDailyForecast(lat, lon)
+        val dailyForecastResponse = repository.getDailyForecast(lat, lon, unit)
         if (dailyForecastResponse.isSuccessful) {
             _dailyForecast.value = dailyForecastResponse.body()
         }
 
-        val hourlyForecastResponse = repository.getHourlyForecast(lat, lon)
+        val hourlyForecastResponse = repository.getHourlyForecast(lat, lon, unit)
         if (hourlyForecastResponse.isSuccessful) {
             _hourlyForecast.value = hourlyForecastResponse.body()
         }
