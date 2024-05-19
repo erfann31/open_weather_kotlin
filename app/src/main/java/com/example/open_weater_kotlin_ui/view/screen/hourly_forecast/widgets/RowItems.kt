@@ -15,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,27 +31,39 @@ import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.model.entities.HourlyForecast
 import com.example.open_weater_kotlin_ui.model.utils.Convertor.getResourceId
-import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.metric
 import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.selectedItemId
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 
 @Composable
-fun RowItems(item: HourlyForecast, index: Int) {
+fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
+    val metric = remember {
+        mutableStateOf(
+            if (viewModel.isMetric.value) {
+                "℃"
+            } else {
+                "°F"
+            }
+        )
+    }
     val interactionSource = remember { MutableInteractionSource() }
     val isSelected = selectedItemId.intValue == index
-    Card(modifier = Modifier
-        .padding(6.dp)
-        .height(190.dp)
-        .width(70.dp)
-        .clickable(
-            interactionSource = interactionSource,
-            indication = null
-        ) { if (!isSelected) selectedItemId.intValue = index },
+    Card(
+        modifier = Modifier
+            .padding(6.dp)
+            .height(190.dp)
+            .width(70.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            )
+            { if (!isSelected) selectedItemId.intValue = index },
         shape = RoundedCornerShape(50.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
         ),
-        elevation = CardDefaults.cardElevation(10.dp))
+        elevation = CardDefaults.cardElevation(10.dp),
+    )
     {
         Column(
             modifier = Modifier
@@ -70,11 +83,12 @@ fun RowItems(item: HourlyForecast, index: Int) {
                 ),
             )
             Icon(
-                modifier = Modifier
-                    .scale(1.8f), painter = getResourceId(
+                modifier = Modifier.scale(1.8f),
+                painter = getResourceId(
                     item.weather?.get(0)?.icon.toString(),
                     item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
-                ), contentDescription = null,
+                ),
+                contentDescription = "icon",
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
             Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
@@ -90,7 +104,7 @@ fun RowItems(item: HourlyForecast, index: Int) {
                 )
 
                 Text(
-                    text = if (metric.value=="℃") "c" else "F",
+                    text = if (metric.value == "℃") "c" else "F",
                     style = TextStyle(
                         color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                         fontWeight = FontWeight.Bold,

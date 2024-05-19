@@ -27,8 +27,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
 import com.example.open_weater_kotlin_ui.model.broadcast.GPSStatusReceiver
+import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
 import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gpsStatusReceiver = GPSStatusReceiver()
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         registerReceiver(gpsStatusReceiver, filter)
@@ -83,13 +83,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(gpsStatusReceiver)
     }
 
     private fun checkGPS() {
-        if (isGPSEnabled()){
+        if (isGPSEnabled()) {
             Toast.makeText(this, "Getting information from GPS...", Toast.LENGTH_SHORT).show()
         }
 
@@ -155,6 +156,7 @@ class MainActivity : ComponentActivity() {
             }
         }, null)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
