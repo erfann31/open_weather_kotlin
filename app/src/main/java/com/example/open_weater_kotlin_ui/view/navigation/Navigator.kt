@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.open_weater_kotlin_ui.view.ChangeLocation.ChangeLocationScreen
-import com.example.open_weater_kotlin_ui.view.HourlyForecast.HourlyForecastScreen
-import com.example.open_weater_kotlin_ui.view.WeeklyForecast.WeeklyForecastScreen
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
+import com.example.open_weater_kotlin_ui.view.screen.change_location.ChangeLocationScreen
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.HourlyForecastScreen
+import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.WeeklyForecastScreen
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

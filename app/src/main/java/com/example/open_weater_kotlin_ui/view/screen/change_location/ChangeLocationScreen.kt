@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.ChangeLocation
+package com.example.open_weater_kotlin_ui.view.screen.change_location
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,10 +42,10 @@ import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.model.Intent.goToMap
 import com.example.open_weater_kotlin_ui.model.utils.LogFileObserver
 import com.example.open_weater_kotlin_ui.model.utils.readLogsFromFile
-import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.CityWidget
-import com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets.RoundedTextField
-import com.example.open_weater_kotlin_ui.viewModel.LocationInfoListener
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
+import com.example.open_weater_kotlin_ui.view.screen.change_location.widgets.CityWidget
+import com.example.open_weater_kotlin_ui.view.screen.change_location.widgets.RoundedTextField
+import com.example.open_weater_kotlin_ui.view_model.lisener.LocationInfoListener
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 @Composable
 fun ChangeLocationScreen(

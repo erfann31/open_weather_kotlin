@@ -8,11 +8,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
+    const val Base = "https://api.openweathermap.org/"
     private const val APP_ID = "271d1234d3f497eed5b1d80a07b3fcd1"
 
     val api: ApiInterface by lazy {
         val retrofit = Retrofit.Builder()
-            .baseUrl(Util.Base)
+            .baseUrl(Base)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()

@@ -27,13 +27,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.model.repository.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
 import com.example.open_weater_kotlin_ui.model.broadcast.GPSStatusReceiver
 import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModelFactory
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
+import com.example.open_weater_kotlin_ui.view_model.factory.WeatherViewModelFactory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
 
         } else {
             val apiInterface = RetrofitInstance.api
-            val weatherRepository = WeatherRepository(apiInterface)
+            val weatherRepository = WeatherRepositoryImpl(apiInterface)
             val factory = WeatherViewModelFactory(weatherRepository)
             val viewModel = ViewModelProvider(this, factory)[WeatherViewModel::class.java]
 
@@ -134,15 +134,13 @@ class MainActivity : ComponentActivity() {
 
                 viewModel.setLatLon(latitude, longitude)
 
-                if (latitude != null && longitude != null) {
-                    setContent {
-                        MyApplicationTheme {
-                            Surface(
-                                modifier = Modifier.fillMaxSize(),
-                                color = MaterialTheme.colorScheme.background
-                            ) {
-                                Navigator(viewModel)
-                            }
+                setContent {
+                    MyApplicationTheme {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.background
+                        ) {
+                            Navigator(viewModel)
                         }
                     }
                 }
@@ -202,7 +200,7 @@ class MainActivity : ComponentActivity() {
             Log.i("locationName", locationName)
 
             val apiInterface = RetrofitInstance.api
-            val weatherRepository = WeatherRepository(apiInterface)
+            val weatherRepository = WeatherRepositoryImpl(apiInterface)
             val factory = WeatherViewModelFactory(weatherRepository)
             val viewModel = ViewModelProvider(this, factory)[WeatherViewModel::class.java]
 

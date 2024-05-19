@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.ChangeLocation.widgets
+package com.example.open_weater_kotlin_ui.view.screen.change_location.widgets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

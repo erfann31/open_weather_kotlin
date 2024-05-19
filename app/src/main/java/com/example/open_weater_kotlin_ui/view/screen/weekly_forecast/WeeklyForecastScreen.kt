@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.WeeklyForecast
+package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -50,12 +50,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
-import com.example.open_weater_kotlin_ui.model.utils.Util.getGeographicalDirection
-import com.example.open_weater_kotlin_ui.model.utils.Util.getHumidityType
-import com.example.open_weater_kotlin_ui.model.utils.Util.getStatus
-import com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets.GridItems
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getGeographicalDirection
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getHumidityType
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getStatus
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.GridItems
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
-import com.example.open_weater_kotlin_ui.viewModel.WeatherViewModel
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 val w_selectedItemId = mutableIntStateOf(0)
 val metric = mutableStateOf("℃")

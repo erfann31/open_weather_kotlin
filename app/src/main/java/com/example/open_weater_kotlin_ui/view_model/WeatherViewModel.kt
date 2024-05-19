@@ -1,17 +1,18 @@
-package com.example.open_weater_kotlin_ui.viewModel
+package com.example.open_weater_kotlin_ui.view_model
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.open_weater_kotlin_ui.model.repository.WeatherRepository
+import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
 import com.example.open_weater_kotlin_ui.model.entities.CityItem
 import com.example.open_weater_kotlin_ui.model.entities.CurrentWeather
 import com.example.open_weater_kotlin_ui.model.entities.ForecastDaily
 import com.example.open_weater_kotlin_ui.model.entities.ForecastHourly
 import com.example.open_weater_kotlin_ui.model.entities.LocationCoordinate
 import com.example.open_weater_kotlin_ui.model.utils.readCitiesFromFile
+import com.example.open_weater_kotlin_ui.view_model.lisener.LocationInfoListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,7 @@ import org.json.JSONObject
 import java.io.File
 
 @OptIn(FlowPreview::class)
-class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
+class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewModel() {
     var listener: LocationInfoListener? = null
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading

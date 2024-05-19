@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.WeeklyForecast
+package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast
 
 
 import android.os.Build
@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
-import com.example.open_weater_kotlin_ui.model.utils.Util
-import com.example.open_weater_kotlin_ui.model.utils.Util.convertMillisToDate
-import com.example.open_weater_kotlin_ui.model.utils.Util.getDayOfWeek
+import com.example.open_weater_kotlin_ui.model.utils.Convertor
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.convertMillisToDate
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getDayOfWeek
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -94,7 +94,7 @@ fun RowItems(item: DailyForecast, index: Int) {
 
             Icon(
                 modifier = Modifier
-                    .scale(1.8f), painter = Util.getResourceId_weekly(
+                    .scale(1.8f), painter = Convertor.getResourceId_weekly(
                     item.weather?.get(0)?.icon.toString()
                 ),
                 contentDescription = null,

@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets
+package com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 import com.example.open_weater_kotlin_ui.model.entities.HourlyForecast
-import com.example.open_weater_kotlin_ui.model.utils.Util.getResourceId
-import com.example.open_weater_kotlin_ui.view.HourlyForecast.metric
-import com.example.open_weater_kotlin_ui.view.HourlyForecast.selectedItemId
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getResourceId
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.metric
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.selectedItemId
 
 
 @Composable

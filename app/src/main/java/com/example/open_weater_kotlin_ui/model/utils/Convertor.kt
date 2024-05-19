@@ -14,9 +14,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
-object Util {
-    const val Base = "https://api.openweathermap.org/"
-
+object Convertor {
 
     @Composable
     fun getResourceId(iconName: String,currentTime: Int): Painter {

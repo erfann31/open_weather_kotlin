@@ -1,4 +1,4 @@
-package com.example.open_weater_kotlin_ui.view.HourlyForecast.widgets
+package com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
