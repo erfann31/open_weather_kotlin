@@ -54,7 +54,6 @@ fun ChangeLocationScreen(
 ) {
     val context = LocalContext.current
     val logs = remember { mutableStateOf(readLogsFromFile(context)) }
-    var addNewFavValue by remember { mutableStateOf("") }
     val locationsName by viewModel.locationsName.observeAsState(emptyList())
     var locationName by remember { mutableStateOf("") }
 
