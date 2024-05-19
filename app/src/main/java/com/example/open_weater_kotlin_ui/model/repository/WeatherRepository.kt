@@ -8,8 +8,8 @@ import retrofit2.Response
 
 interface WeatherRepository {
     suspend fun getCoordinatesByLocationName(locationName: String): Response<List<LocationCoordinate>>
-    suspend fun getCurrentWeatherData(lat: Double, lon: Double): Response<CurrentWeather>
     suspend fun reverseGeocoding(lat: Double, lon: Double): Response<List<LocationCoordinate>>
-    suspend fun getDailyForecast(lat: Double, lon: Double): Response<ForecastDaily>
-    suspend fun getHourlyForecast(lat: Double, lon: Double): Response<ForecastHourly>
+    suspend fun getCurrentWeatherData(lat: Double, lon: Double, unit: String): Response<CurrentWeather>
+    suspend fun getDailyForecast(lat: Double, lon: Double, unit: String): Response<ForecastDaily>
+    suspend fun getHourlyForecast(lat: Double, lon: Double, unit: String): Response<ForecastHourly>
 }
