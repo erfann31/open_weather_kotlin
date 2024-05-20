@@ -19,13 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
@@ -51,8 +51,8 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
     Card(
         modifier = Modifier
             .padding(6.dp)
-            .height(190.dp)
-            .width(70.dp)
+            .height(195.dp)
+            .width(72.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null
@@ -74,6 +74,8 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
         )
         {
             Text(
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 text = item.dateTimeText!!.substring(10, 16),
                 style = TextStyle(
                     color = if (isSelected) colorResource(R.color.customCard) else Color.White,
@@ -83,7 +85,7 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
                 ),
             )
             Icon(
-                modifier = Modifier.scale(1.8f),
+                modifier = Modifier.height(35.dp).width(35.dp),
                 painter = getResourceId(
                     item.weather?.get(0)?.icon.toString(),
                     item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
