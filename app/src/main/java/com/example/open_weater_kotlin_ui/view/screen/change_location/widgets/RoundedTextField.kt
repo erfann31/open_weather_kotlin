@@ -33,6 +33,26 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.open_weater_kotlin_ui.R
 
+/**
+ * A custom text field with a rounded shape, customizable colors, and an optional search icon.
+ *
+ * @param placeholderColor The color of the placeholder text.
+ * @param cursurColor The color of the cursor.
+ * @param textColor The color of the input text.
+ * @param containerColor The background color of the text field.
+ * @param borderColor The color of the border when the text field is focused or unfocused.
+ * @param isRounded Boolean flag to determine if the text field should have rounded corners.
+ * @param text The current text to display inside the text field.
+ * @param showIcon Boolean flag to determine if a search icon should be shown.
+ * @param textSize The size of the input text.
+ * @param placeholder The placeholder text to display when the text field is empty.
+ * @param onSearchClicked Callback to be invoked when the search icon is clicked or the search action is triggered.
+ * @param onTextChanged Callback to be invoked when the text changes.
+ *
+ * @author Erfan Nasri
+ */
+
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RoundedTextField(

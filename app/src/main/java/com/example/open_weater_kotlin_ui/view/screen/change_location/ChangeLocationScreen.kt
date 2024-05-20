@@ -55,6 +55,16 @@ import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 import com.example.open_weater_kotlin_ui.view_model.lisener.LocationInfoListener
 import kotlinx.coroutines.delay
 
+/**
+ * A composable function that displays the screen for changing the location in the weather app.
+ * The screen includes a search bar, a list of searched locations, and saved locations.
+ *
+ * @param navHostController The NavHostController for navigating between screens.
+ * @param viewModel The WeatherViewModel providing the weather data and handling user interactions.
+ *
+ * @author Erfan Nasri
+ */
+
 @Composable
 fun ChangeLocationScreen(
     navHostController: NavHostController,
@@ -78,12 +88,23 @@ fun ChangeLocationScreen(
         }
     }
     var isLoading by remember { mutableStateOf(false) }
+
+    /**
+     * Sets a listener for location info fetching events. When the location info is fetched,
+     * loading is stopped and the navigation to the "hourly_forecast" screen is triggered.
+     */
     viewModel.listener = object : LocationInfoListener {
         override fun onLocationInfoFetched() {
             isLoading = false
             navHostController.navigate("hourly_forecast")
         }
     }
+
+
+    /**
+     * Launches an effect that checks if a loading operation is in progress. If it takes longer than 5 seconds,
+     * a timeout message is displayed and loading is stopped.
+     */
     LaunchedEffect(isLoading) {
         if (isLoading) {
             delay(5000)

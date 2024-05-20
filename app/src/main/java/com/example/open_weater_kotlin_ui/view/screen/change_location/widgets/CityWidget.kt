@@ -34,6 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 
+/**
+ * A composable function that displays a city widget, which can be used to display, add, or edit a city.
+ *
+ * @param text The text to display inside the widget. Default value is the string resource for "Add City".
+ * @param onClick Callback to be invoked when the widget is clicked.
+ * @param iconOnClick Callback to be invoked when the icon button is clicked.
+ * @param onTextChanged Callback to be invoked when the text changes in the text field.
+ * @param textFieldValue The current text to display inside the text field.
+ * @param isEdit Boolean flag to determine if the widget is in edit mode.
+ * @param isAdd Boolean flag to determine if the widget is in add mode.
+ *
+ * @author Erfan Nasri
+ */
+
 @Composable
 fun CityWidget(
     modifier: Modifier = Modifier,
