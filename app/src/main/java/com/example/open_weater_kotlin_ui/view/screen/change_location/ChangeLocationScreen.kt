@@ -1,5 +1,6 @@
 package com.example.open_weater_kotlin_ui.view.screen.change_location
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +53,7 @@ import com.example.open_weater_kotlin_ui.view.screen.change_location.widgets.Cit
 import com.example.open_weater_kotlin_ui.view.screen.change_location.widgets.RoundedTextField
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 import com.example.open_weater_kotlin_ui.view_model.lisener.LocationInfoListener
+import kotlinx.coroutines.delay
 
 @Composable
 fun ChangeLocationScreen(
@@ -79,6 +82,15 @@ fun ChangeLocationScreen(
         override fun onLocationInfoFetched() {
             isLoading = false
             navHostController.navigate("hourly_forecast")
+        }
+    }
+    LaunchedEffect(isLoading) {
+        if (isLoading) {
+            delay(5000)
+            if (isLoading) {
+                Toast.makeText(context, "Request timed out. Redirecting...", Toast.LENGTH_SHORT).show()
+                isLoading = false
+            }
         }
     }
     Column(
@@ -131,8 +143,9 @@ fun ChangeLocationScreen(
                 if (isLoading) {
                     item {
                         Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+                            contentAlignment = Alignment.Center,
+
                         ) {
                             CircularProgressIndicator(
                                 color = Color.White,
