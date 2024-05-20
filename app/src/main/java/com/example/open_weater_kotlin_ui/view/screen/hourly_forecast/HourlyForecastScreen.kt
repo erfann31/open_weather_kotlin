@@ -41,6 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -126,7 +127,7 @@ fun HourlyForecastScreen(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
             "txt1" to "%.1f".format(selectedItem?.wind?.speed),
-            "txt2" to "to ${selectedItem?.wind?.deg?.let { getGeographicalDirection(it) }}",
+            "txt2" to "To ${selectedItem?.wind?.deg?.let { getGeographicalDirection(it) }}",
             "txt3" to " ${windSpeed.value}"
         )
 
@@ -166,10 +167,12 @@ fun HourlyForecastScreen(
                 {
                     hourlyForecast?.city?.name?.let {
                         Text(
+                            modifier = Modifier.padding(horizontal = 60.dp),
                             text = it,
-                            maxLines = 1,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
+                                textAlign = TextAlign.Center,
                                 color = Color.White,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 30.sp,
