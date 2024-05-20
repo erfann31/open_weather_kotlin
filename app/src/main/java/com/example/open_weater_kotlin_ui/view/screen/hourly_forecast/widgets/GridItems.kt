@@ -25,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
@@ -60,6 +61,8 @@ fun GridItems(item: MutableMap<String, Any?>) {
 
             Text(
                 text = item["title"] as String,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     color = Color.White,
                     fontWeight = FontWeight.Normal,
@@ -82,6 +85,8 @@ fun GridItems(item: MutableMap<String, Any?>) {
                 (item["txt1"] as String?)?.let {
                     Text(
                         text = it,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
@@ -94,6 +99,8 @@ fun GridItems(item: MutableMap<String, Any?>) {
                 (item["txt3"] as String?)?.let {
                     Text(
                         text = it,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.SemiBold,
@@ -109,11 +116,13 @@ fun GridItems(item: MutableMap<String, Any?>) {
 
             (item["txt2"] as String?)?.let {
                 Text(
-                    text = it,
+                    text = it.uppercase(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     style = TextStyle(
                         color = Color.White,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_light))
                     ),
                 )
