@@ -59,7 +59,25 @@ import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.widgets.Row
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
+/**
+ * A MutableIntState variable that holds the ID of the selected item in the weekly forecast list.
+ * It is used as observable state for components to update when the selected item changes.
+ */
 val w_selectedItemId = mutableIntStateOf(0)
+
+
+/**
+ * A Composable function that displays the weekly weather forecast screen.
+ *
+ * @param navHostController The NavHostController used for navigation.
+ * @param viewModel The ViewModel that contains the weather data. Defaults to the shared ViewModel instance.
+ *
+ * This function uses LaunchedEffect to update the selected item whenever the selected item ID changes.
+ * It displays various weather forecast details such as temperature, humidity, wind, and cloud cover.
+ * The function utilizes LazyRow and LazyVerticalGrid to display the list of forecasts and detailed information, respectively.
+ *
+ * @author Motahare Vakili
+ */
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -67,7 +85,12 @@ fun WeeklyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
+    /**
+     * A variable that holds the current metric setting from the WeatherViewModel.
+     * It determines whether the temperature and wind speed are displayed in metric units (Celsius, km/h) or imperial units (Fahrenheit, mph).
+     */
     val isMetric = viewModel.isMetric.value
+
     val temp = remember {
         mutableStateOf(
             if (isMetric) {
@@ -112,6 +135,16 @@ fun WeeklyForecastScreen(
                 }
             }
         }
+
+        /**
+         * A map containing information about the real feel temperature.
+         * Keys and values:
+         * - "title": The title of the box, which is "Real Feel".
+         * - "icon": The resource ID for the temperature icon.
+         * - "txt1": The formatted real feel temperature.
+         * - "txt2": The formatted maximum and minimum temperatures.
+         * - "txt3": The temperature unit (°C or °F).
+         */
         val w_box1 = mutableMapOf<String, Any?>(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
@@ -120,6 +153,14 @@ fun WeeklyForecastScreen(
             "txt3" to " ${temp.value}"
         )
 
+        /**
+         * A map containing information about the humidity.
+         * Keys and values:
+         * - "title": The title of the box, which is "Humidity".
+         * - "icon": The resource ID for the humidity icon.
+         * - "txt1": The humidity value as a string.
+         * - "txt2": The humidity type description.
+         */
         val w_box2 = mutableMapOf<String, Any?>(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
@@ -128,6 +169,15 @@ fun WeeklyForecastScreen(
             "txt3" to " %"
         )
 
+        /**
+         * A map containing information about the wind.
+         * Keys and values:
+         * - "title": The title of the box, which is "Wind".
+         * - "icon": The resource ID for the wind icon.
+         * - "txt1": The formatted wind speed.
+         * - "txt2": The geographical direction of the wind.
+         * - "txt3": The wind speed unit (km/h or mph).
+         */
         val w_box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
@@ -136,6 +186,13 @@ fun WeeklyForecastScreen(
             "txt3" to " ${windSpeed.value}"
         )
 
+        /**
+         * A map containing information about the cloud cover.
+         * - "title": The title of the box, which is "Cloud Cover".
+         * - "icon": The resource ID for the cloud icon.
+         * - "txt1": The cloud cover percentage as a string.
+         * - "txt2": The description of the weather.
+         */
         val w_box4 = mutableMapOf<String, Any?>(
             "title" to " Cloud Cover",
             "icon" to R.drawable.cloud, // Use resource ID directly
