@@ -31,6 +31,19 @@ import androidx.compose.ui.unit.sp
 import com.example.open_weater_kotlin_ui.R
 
 
+/**
+ * A Composable function that displays a grid item with specified attributes.
+ *
+ * @param item A mutable map containing the item's properties:
+ * - "title": The title of the item (String).
+ * - "icon": The resource ID for the item's icon (Int).
+ * - "txt1": The primary text to display (String?).
+ * - "txt2": The secondary text to display (String?).
+ * - "txt3": The suffix text to display (String?).
+ *
+ *@author Motahare Vakili
+ */
+
 @Composable
 fun GridItems(item: MutableMap<String, Any?>) {
 

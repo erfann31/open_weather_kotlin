@@ -44,7 +44,7 @@ import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
  * This function creates a card for each hourly forecast item, displaying the time, weather icon, and temperature.
  * It also handles click events to select the item.
  *
- @author Motahare Vakili
+ * @author Motahare Vakili
  */
 @Composable
 fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
