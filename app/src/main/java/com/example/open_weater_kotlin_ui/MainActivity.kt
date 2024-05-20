@@ -96,7 +96,7 @@ class MainActivity : ComponentActivity() {
 
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "Please enable GPS", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enable GPS", Toast.LENGTH_LONG).show()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 
         } else {
