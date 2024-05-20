@@ -57,7 +57,22 @@ import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.Row
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
+/**
+ * A mutable state integer representing the ID of the selected item in the hourly forecast list.
+ * This is used to track and update the currently selected forecast item.
+ */
 val selectedItemId = mutableIntStateOf(0)
+
+
+/**
+ * This composable function displays the hourly forecast screen with the weather data.
+ * It shows the current weather, hourly forecast, and detailed information for a selected item.
+ *
+ * @param navHostController The NavHostController to navigate between different screens.
+ * @param viewModel The WeatherViewModel to observe the weather data.
+ *
+ * @author Motahare Vakili
+ */
 
 @Composable
 fun HourlyForecastScreen(
@@ -85,7 +100,7 @@ fun HourlyForecastScreen(
     }
     val hourlyForecast by viewModel.hourlyForecast.observeAsState()
     if (hourlyForecast == null) {
-        // نمایش پیام Loading
+        // Display loading message
         GradientBackground {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = Color.White)
@@ -93,6 +108,11 @@ fun HourlyForecastScreen(
         }
     } else {
         val hourlyForecasts: List<HourlyForecast>? = hourlyForecast?.list
+
+        /**
+         * A mutable state representing the currently selected hourly forecast item.
+         * It is remembered and updated whenever the `selectedItemId` changes.
+         */
         var selectedItem by remember(selectedItemId) { mutableStateOf<HourlyForecast?>(null) }
 
         LaunchedEffect(selectedItemId.intValue) {
@@ -107,14 +127,32 @@ fun HourlyForecastScreen(
                 }
             }
         }
+
+        /**
+         * A map containing information about the real feel temperature.
+         * Keys and values:
+         * - "title": The title of the box, which is "Real Feel".
+         * - "icon": The resource ID for the temperature icon.
+         * - "txt1": The formatted real feel temperature.
+         * - "txt2": The formatted maximum and minimum temperatures.
+         * - "txt3": The temperature unit (°C or °F).
+         */
         val box1 = mutableMapOf<String, Any?>(
-            "title" to " Real Feel",
+            "title" to "Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
             "txt1" to "%.1f".format(selectedItem?.main?.feelsLike),
             "txt2" to "${"%.1f".format(selectedItem?.main?.tempMax)}° / ${"%.1f".format(selectedItem?.main?.tempMin)}°",
             "txt3" to " ${temp.value}"
         )
 
+        /**
+         * A map containing information about the humidity.
+         * Keys and values:
+         * - "title": The title of the box, which is "Humidity".
+         * - "icon": The resource ID for the humidity icon.
+         * - "txt1": The humidity value as a string.
+         * - "txt2": The humidity type description.
+         */
         val box2 = mutableMapOf<String, Any?>(
             "title" to "Humidity",
             "icon" to R.drawable.humidity, // Use resource ID directly
@@ -123,6 +161,15 @@ fun HourlyForecastScreen(
             "txt3" to " %"
         )
 
+        /**
+         * A map containing information about the wind.
+         * Keys and values:
+         * - "title": The title of the box, which is "Wind".
+         * - "icon": The resource ID for the wind icon.
+         * - "txt1": The formatted wind speed.
+         * - "txt2": The geographical direction of the wind.
+         * - "txt3": The wind speed unit (km/h or mph).
+         */
         val box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
@@ -131,8 +178,15 @@ fun HourlyForecastScreen(
             "txt3" to " ${windSpeed.value}"
         )
 
+        /**
+         * A map containing information about the cloud cover.
+         * - "title": The title of the box, which is "Cloud Cover".
+         * - "icon": The resource ID for the cloud icon.
+         * - "txt1": The cloud cover percentage as a string.
+         * - "txt2": The description of the weather.
+         */
         val box4 = mutableMapOf<String, Any?>(
-            "title" to " Cloud Cover",
+            "title" to "Cloud Cover",
             "icon" to R.drawable.cloud, // Use resource ID directly
             "txt1" to selectedItem?.clouds?.all.toString(),
             "txt2" to selectedItem?.weather?.getOrNull(0)?.description,

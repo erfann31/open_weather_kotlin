@@ -75,7 +75,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
 
         Column(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(vertical = 10.dp, horizontal = 8.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -122,7 +122,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_light))
                     ),
                 )
