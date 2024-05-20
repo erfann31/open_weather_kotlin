@@ -7,10 +7,19 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Singleton object to create and provide a Retrofit instance configured with necessary settings.
+ *
+ * @author Erfan Nasri
+ */
 object RetrofitInstance {
     const val Base = "https://api.openweathermap.org/"
     private const val APP_ID = "271d1234d3f497eed5b1d80a07b3fcd1"
 
+
+    /**
+     * Lazily initialized Retrofit API interface for making network calls.
+     */
     val api: ApiInterface by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(Base)
@@ -33,7 +42,11 @@ object RetrofitInstance {
         retrofit.newBuilder().client(client).build().create(ApiInterface::class.java)
     }
 
-
+    /**
+     * Provides the application ID for API requests.
+     *
+     * @return The application ID string.
+     */
     fun getAppId(): String {
         return APP_ID
     }

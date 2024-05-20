@@ -16,6 +16,15 @@ import java.util.Locale
 
 object Convertor {
 
+    /**
+     * Retrieves the appropriate drawable resource based on the icon name and the current time.
+     *
+     * @param iconName The name of the weather icon.
+     * @param currentTime The current time in hours (0-23).
+     * @return The painter resource for the icon.
+     *
+     * @author Motahare Vakili
+     */
     @Composable
     fun getResourceId(iconName: String, currentTime: Int): Painter {
         val suffix = if (currentTime in 6..18) "d" else "n"
@@ -23,6 +32,14 @@ object Convertor {
         return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
     }
 
+    /**
+     * Determines the humidity type based on the given percentage.
+     *
+     * @param percentage The humidity percentage.
+     * @return A string representing the humidity type.
+     *
+     * @author Motahare Vakili
+     */
     fun getHumidityType(percentage: Int): String {
         return when {
             percentage in 30..50 -> "Normal "
@@ -32,6 +49,14 @@ object Convertor {
         }
     }
 
+    /**
+     * Determines the geographical direction based on the given degree.
+     *
+     * @param degree The degree (0-360).
+     * @return A string representing the geographical direction.
+     *
+     * @author Motahare Vakili
+     */
     fun getGeographicalDirection(degree: Int): String {
         return when (degree) {
             in 0..22 -> "North"
@@ -47,6 +72,14 @@ object Convertor {
         }
     }
 
+    /**
+     * Determines the weather status based on the given number.
+     *
+     * @param number The weather status code.
+     * @return A string representing the weather status.
+     *
+     * @author Motahare Vakili
+     */
     fun getStatus(number: Int): String {
         return when (number) {
             2 -> "Thunderstorm"
@@ -59,12 +92,29 @@ object Convertor {
         }
     }
 
+    /**
+     * Retrieves the appropriate drawable resource for weekly forecast based on the icon name.
+     *
+     * @param iconName The name of the weather icon.
+     * @return The painter resource for the icon.
+     *
+     *  @author Motahare Vakili
+     */
     @Composable
     fun getResourceId_weekly(iconName: String): Painter {
         val resourceName = "ic${iconName.substring(0, 2)}d"
         return painterResource(id = R.drawable::class.java.getField(resourceName).getInt(null))
     }
 
+
+    /**
+     * Converts a timestamp in milliseconds to a formatted date string.
+     *
+     * @param timestamp The timestamp in milliseconds.
+     * @return A formatted date string.
+     *
+     * @author Motahare Vakili
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun convertMillisToDate(timestamp: Long): String {
         val dt = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault())
@@ -72,6 +122,14 @@ object Convertor {
         return dt.format(formatter)
     }
 
+    /**
+     * Determines the day of the week from a formatted date string.
+     *
+     * @param timestamp The formatted date string.
+     * @return A string representing the day of the week.
+     *
+     * @author Motahare Vakili
+     */
     fun getDayOfWeek(timestamp: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val date = sdf.parse(timestamp)
