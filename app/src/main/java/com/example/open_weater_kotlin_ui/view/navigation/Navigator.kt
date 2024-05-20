@@ -12,6 +12,12 @@ import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.HourlyForec
 import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.WeeklyForecastScreen
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
+/**
+ * A composable function that sets up the navigation for the weather app.
+ *
+ * @param viewMode The ViewModel used to manage weather-related data and state.
+ */
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigator(viewMode: WeatherViewModel) {
