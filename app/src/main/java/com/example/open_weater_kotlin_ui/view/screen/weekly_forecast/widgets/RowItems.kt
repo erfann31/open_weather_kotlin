@@ -1,6 +1,5 @@
 package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.widgets
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -39,10 +38,21 @@ import com.example.open_weater_kotlin_ui.model.utils.Convertor.getDayOfWeek
 import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.w_selectedItemId
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
-
+/**
+ * A composable function that displays a card for each day's weather forecast.
+ * Each card shows the day of the week, date, weather icon, and temperature.
+ * The card's background color changes based on whether it is selected.
+ *
+ * @param item The DailyForecast object containing the weather data for a specific day.
+ * @param index The index of the current item in the list.
+ * @param viewModel The WeatherViewModel providing the weather data and metric settings.
+ *
+ * @author Motahare Vakili
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
+    // Metric unit setting based on the viewModel
     val metric = remember {
         mutableStateOf(
             if (viewModel.isMetric.value) {
@@ -52,9 +62,17 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
             }
         )
     }
+
+    // Interaction source for the clickable card
     val interactionSource = remember { MutableInteractionSource() }
+
+    // Check if the current item is selected
     val isSelected = w_selectedItemId.intValue == index
+
+    // Convert the timestamp to a date string
     val date = item.dt?.let { convertMillisToDate(it) }
+
+    // Card to display the weather forecast
     Card(
         modifier = Modifier
             .padding(6.dp)
@@ -69,26 +87,27 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
             containerColor = if (isSelected) Color.White else colorResource(R.color.customCard)
         ),
         elevation = CardDefaults.cardElevation(10.dp)
-    )
-    {
+    ) {
         Column(
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                // Display the day of the week
                 Text(
-                    text = (getDayOfWeek(date!!)),
+                    text = getDayOfWeek(date!!),
                     style = TextStyle(
                         color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_bold))
-                    ),
+                    )
                 )
+
+                // Display the date
                 Text(
                     text = "${
                         if (date[5] == '0') date.substring(6, 7) else date.substring(6, 7)
@@ -104,6 +123,7 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
                 )
             }
 
+            // Display the weather icon
             Icon(
                 modifier = Modifier.scale(1.8f),
                 painter = Convertor.getResourceId_weekly(
@@ -116,10 +136,10 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
-            )
-            {
+            ) {
+                // Display the temperature
                 Text(
-                    text = "${item.temp?.day?.toInt().toString()}°",
+                    text = "${item.temp?.day?.toInt()}°",
                     style = TextStyle(
                         color = if (isSelected) colorResource(R.color.customCard) else Color.White,
                         fontWeight = FontWeight.Bold,
@@ -128,6 +148,7 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
                     )
                 )
 
+                // Display the unit of temperature
                 Text(
                     text = if (metric.value == "℃") "c" else "F",
                     style = TextStyle(
@@ -138,9 +159,6 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
                     )
                 )
             }
-
         }
-
-
     }
 }
