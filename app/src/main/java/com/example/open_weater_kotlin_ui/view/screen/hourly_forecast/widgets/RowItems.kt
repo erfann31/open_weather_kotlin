@@ -34,7 +34,18 @@ import com.example.open_weater_kotlin_ui.model.utils.Convertor.getResourceId
 import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.selectedItemId
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
-
+/**
+ * Composable function to display an hourly forecast item in a row.
+ *
+ * @param item The hourly forecast item to display.
+ * @param index The index of the item in the list.
+ * @param viewModel The ViewModel instance to access the metric system setting.
+ *
+ * This function creates a card for each hourly forecast item, displaying the time, weather icon, and temperature.
+ * It also handles click events to select the item.
+ *
+ @author Motahare Vakili
+ */
 @Composable
 fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
     val metric = remember {
@@ -46,8 +57,23 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
             }
         )
     }
+    /**
+     * Creates a MutableInteractionSource to handle click interactions without any visual feedback.
+     * This is used to manage the clickable state of the card.
+     */
     val interactionSource = remember { MutableInteractionSource() }
+
+
+    /**
+     * Determines if the current item is selected based on its index.
+     * This is used to apply different styles to the selected item.
+     *
+     * @param selectedItemId The state that holds the ID of the selected item.
+     * @param index The index of the current item in the list.
+     * @return True if the current item's index matches the selectedItemId, otherwise false.
+     */
     val isSelected = selectedItemId.intValue == index
+
     Card(
         modifier = Modifier
             .padding(6.dp)
