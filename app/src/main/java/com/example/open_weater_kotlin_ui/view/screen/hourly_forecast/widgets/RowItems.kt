@@ -78,8 +78,8 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
     Card(
         modifier = Modifier
             .padding(6.dp)
-            .height(195.dp)
-            .width(72.dp)
+            .height(190.dp)
+            .width(70.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null
@@ -94,14 +94,13 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
     {
         Column(
             modifier = Modifier
-                .padding(10.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
             Text(
-                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 10.dp),
                 maxLines = 1,
                 text = item.dateTimeText!!.substring(10, 16),
                 style = TextStyle(
@@ -120,7 +119,9 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
                 contentDescription = "icon",
                 tint = if (isSelected) colorResource(R.color.customCard) else Color.White
             )
-            Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
+            Row(
+                modifier = Modifier.padding(bottom = 10.dp),
+                horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically)
             {
                 Text(
                     text = "${item.main!!.temp?.toInt().toString()}°",
