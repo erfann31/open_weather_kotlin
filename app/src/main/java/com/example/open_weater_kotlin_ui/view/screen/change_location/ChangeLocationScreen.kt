@@ -164,10 +164,12 @@ fun ChangeLocationScreen(
                 if (isLoading) {
                     item {
                         Box(
-                            modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 30.dp),
                             contentAlignment = Alignment.Center,
 
-                        ) {
+                            ) {
                             CircularProgressIndicator(
                                 color = Color.White,
                                 modifier = Modifier.height(30.dp)
