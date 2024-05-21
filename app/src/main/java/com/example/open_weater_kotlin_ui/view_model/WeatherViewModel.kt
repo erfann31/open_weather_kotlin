@@ -24,6 +24,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
+/**
+ * ViewModel class for managing weather data and related operations.
+ *
+ * @property repository The repository used for fetching weather data.
+ *
+ * @author Erfan Nasri
+ */
 class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewModel() {
     var listener: LocationInfoListener? = null
 
@@ -63,6 +70,12 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
         updateWeatherData(lat.value!!, lon.value!!)
     }
 
+    /**
+     * Adds a city name to a file.
+     *
+     * @param context The context of the application.
+     * @param cityName The name of the city to be added.
+     */
     fun addCityToFile(context: Context, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val logFile = File(context.filesDir, "city_logs.json")
@@ -98,6 +111,12 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
         }
     }
 
+    /**
+     * Deletes a city name from a file.
+     *
+     * @param context The context of the application.
+     * @param cityName The name of the city to be deleted.
+     */
     fun deleteCityFromFile(context: Context, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val logFile = File(context.filesDir, "city_logs.json")
@@ -141,18 +160,35 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
             .launchIn(viewModelScope)
     }
 
+    /**
+     * Sets the latitude and longitude for the current location.
+     *
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     */
     fun setLatLon(latitude: Double, longitude: Double) {
         _lat.value = latitude
         _lon.value = longitude
         updateWeatherData(latitude, longitude)
     }
 
+    /**
+     * Updates the weather data based on the given latitude and longitude.
+     *
+     * @param lat The latitude of the location.
+     * @param lon The longitude of the location.
+     */
     fun updateWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch {
             fetchWeatherData(lat, lon)
         }
     }
 
+    /**
+     * Fetches the coordinates for a given location name.
+     *
+     * @param locationName The name of the location.
+     */
     fun getLocationCoordinates(locationName: String) {
         viewModelScope.launch {
             val response = repository.getCoordinatesByLocationName(locationName)
@@ -174,6 +210,11 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
         locationNameFlow.value = locationName
     }
 
+    /**
+     * Fills the list of location names based on the given location name.
+     *
+     * @param locationName The name of the location.
+     */
     private fun fillLocationsName(locationName: String) {
         viewModelScope.launch {
             val response = repository.getCoordinatesByLocationName(locationName)
@@ -195,6 +236,12 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
         }
     }
 
+    /**
+     * Fetches the weather data for the given latitude and longitude.
+     *
+     * @param lat The latitude of the location.
+     * @param lon The longitude of the location.
+     */
     private suspend fun fetchWeatherData(lat: Double, lon: Double) {
         val unit = if (isMetric.value) "metric" else "imperial"
 
