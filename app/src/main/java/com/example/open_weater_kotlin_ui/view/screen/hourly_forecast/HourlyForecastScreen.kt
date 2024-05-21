@@ -294,16 +294,17 @@ fun HourlyForecastScreen(
                 }
 
 
-                LazyRow(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    items(items = hourlyForecasts ?: emptyList()) { items ->
-                        if (hourlyForecasts != null) {
-                            RowItems(items, hourlyForecasts.indexOf(items), viewModel)
+                    LazyRow(
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    ) {
+                        item { Spacer(modifier = Modifier.width(10.dp)) }
+                        items(items = hourlyForecasts ?: emptyList()) { items ->
+                            if (hourlyForecasts != null) {
+                                RowItems(items, hourlyForecasts.indexOf(items), viewModel)
+                            }
                         }
+                        item { Spacer(modifier = Modifier.width(10.dp)) }
                     }
-
-                }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.padding(10.dp),
