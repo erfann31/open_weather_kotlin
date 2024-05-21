@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -66,7 +67,14 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
     // Interaction source for the clickable card
     val interactionSource = remember { MutableInteractionSource() }
 
-    // Check if the current item is selected
+    /**
+     * Determines if the current item is selected based on its index.
+     * This is used to apply different styles to the selected item.
+     *
+     * w_selectedItemId is The state that holds the ID of the selected item.
+     * index is The index of the current item in the list.
+     * @return True if the current item's index matches the selectedItemId, otherwise false.
+     */
     val isSelected = w_selectedItemId.intValue == index
 
     // Convert the timestamp to a date string
@@ -125,7 +133,7 @@ fun RowItems(item: DailyForecast, index: Int, viewModel: WeatherViewModel) {
 
             // Display the weather icon
             Icon(
-                modifier = Modifier.scale(1.8f),
+                modifier = Modifier.size(width = 40.dp , height = 40.dp),
                 painter = Convertor.getResourceId_weekly(
                     item.weather?.get(0)?.icon.toString()
                 ),

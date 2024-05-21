@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -68,8 +69,8 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
      * Determines if the current item is selected based on its index.
      * This is used to apply different styles to the selected item.
      *
-     * @param selectedItemId The state that holds the ID of the selected item.
-     * @param index The index of the current item in the list.
+     * selectedItemId is  The state that holds the ID of the selected item.
+     * index is The index of the current item in the list.
      * @return True if the current item's index matches the selectedItemId, otherwise false.
      */
     val isSelected = selectedItemId.intValue == index
@@ -111,7 +112,7 @@ fun RowItems(item: HourlyForecast, index: Int, viewModel: WeatherViewModel) {
                 ),
             )
             Icon(
-                modifier = Modifier.height(35.dp).width(35.dp),
+                modifier = Modifier.size(width = 40.dp , height = 40.dp),
                 painter = getResourceId(
                     item.weather?.get(0)?.icon.toString(),
                     item.dateTimeText.substring(11, 13).toIntOrNull(radix = 10) ?: 0
