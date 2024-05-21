@@ -305,8 +305,9 @@ fun WeeklyForecastScreen(
 
 
                 LazyRow(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 ) {
+                    item{Spacer(modifier = Modifier.width(10.dp))}
                     items(items = dailyForecasts ?: emptyList()) { items ->
                         if (dailyForecasts != null) {
                             RowItems(
@@ -316,7 +317,7 @@ fun WeeklyForecastScreen(
                             )
                         }
                     }
-
+                    item{Spacer(modifier = Modifier.width(10.dp))}
                 }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
