@@ -48,7 +48,7 @@ import com.example.open_weater_kotlin_ui.R
 fun GridItems(item: MutableMap<String, Any?>) {
 
     Card(
-        modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp),
+        modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
         elevation = CardDefaults.cardElevation(10.dp)
