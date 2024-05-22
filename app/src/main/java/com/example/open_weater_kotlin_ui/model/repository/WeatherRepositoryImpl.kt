@@ -17,7 +17,7 @@ import retrofit2.Response
  * @author Erfan Nasri
  */
 class WeatherRepositoryImpl(private val apiInterface: ApiInterface) : WeatherRepository {
-    private val appId = RetrofitInstance.getAppId()
+    val appId = RetrofitInstance.getAppId()
 
     /**
      * Retrieves location coordinates by the given location name from the API.
