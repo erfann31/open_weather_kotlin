@@ -33,9 +33,9 @@ import java.io.File
  */
 class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewModel() {
     var listener: LocationInfoListener? = null
-
     var isMetric = mutableStateOf(true)
         private set
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -63,10 +63,14 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
 
     private val _citiesNameFromFile = MutableLiveData<List<String>>()
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
     fun toggleUnit() {
         isMetric.value = !isMetric.value
         updateWeatherData(lat.value!!, lon.value!!)
     }
+
 
     /**
      * Adds a city name to a file.
@@ -179,8 +183,13 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     private fun updateWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch {
             _isLoading.value = true
-            fetchWeatherData(lat, lon)
+            try {
+                fetchWeatherData(lat, lon)
+            } catch (e: Exception) {
+                _error.postValue(e.message ?: "Unknown error occurred")
+            }
             _isLoading.value = false
+
         }
     }
 
@@ -215,9 +224,11 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     fun updateLocationName(locationName: String) {
         locationNameFlow.value = locationName
     }
+
     fun clearLocationsName() {
         _locationsName.value = emptyList()
     }
+
     /**
      * Fills the list of location names based on the given location name.
      *
@@ -251,24 +262,30 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
      * @param lon The longitude of the location.
      */
     private suspend fun fetchWeatherData(lat: Double, lon: Double) {
-        val unit = if (isMetric.value) "metric" else "imperial"
+        try {
+            val unit = if (isMetric.value) "metric" else "imperial"
 
-        val currentWeatherResponse = repository.getCurrentWeatherData(lat, lon, unit)
-        if (currentWeatherResponse.isSuccessful) {
-            _currentWeather.value = currentWeatherResponse.body()
-        }
+            val currentWeatherResponse = repository.getCurrentWeatherData(lat, lon, unit)
+            if (currentWeatherResponse.isSuccessful) {
+                _currentWeather.value = currentWeatherResponse.body()
+            }
 
-        val dailyForecastResponse = repository.getDailyForecast(lat, lon, unit)
-        if (dailyForecastResponse.isSuccessful) {
-            _dailyForecast.value = dailyForecastResponse.body()
-        }
+            val dailyForecastResponse = repository.getDailyForecast(lat, lon, unit)
+            if (dailyForecastResponse.isSuccessful) {
+                _dailyForecast.value = dailyForecastResponse.body()
+            }
 
-        val hourlyForecastResponse = repository.getHourlyForecast(lat, lon, unit)
-        if (hourlyForecastResponse.isSuccessful) {
-            _hourlyForecast.value = hourlyForecastResponse.body()
+            val hourlyForecastResponse = repository.getHourlyForecast(lat, lon, unit)
+            if (hourlyForecastResponse.isSuccessful) {
+                _hourlyForecast.value = hourlyForecastResponse.body()
+            }
+
+            listener?.onLocationInfoFetched()
+        } catch (e: Exception) {
+            _error.postValue(e.message ?: "Unknown error occurred")
         }
-        listener?.onLocationInfoFetched()
     }
+
     companion object {
         @Volatile
         private var instance: WeatherViewModel? = null
