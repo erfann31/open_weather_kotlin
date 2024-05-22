@@ -61,6 +61,20 @@ fun GridItems(item: MutableMap<String, Any?>) {
     val density = LocalDensity.current
     val fontSize = 14.sp
 
+    /**
+     * LaunchedEffect to animate scrolling of text if its length exceeds a specified limit.
+     *
+     * This effect continuously scrolls the text horizontally if its length is greater than or equal to 12 characters.
+     * It calculates the required scroll distance based on the text length and container width.
+     * The text scrolls to the end, then back to the start, with delays between each scroll.
+     *
+     *  text: The text to be scrolled.
+     *  fontSize: The size of the font used for the text.
+     *  density: The density of the current display.
+     *  scrollState: The scroll state object used to control the scrolling.
+     *  animationDuration: The duration of the scroll animation in milliseconds.
+     */
+
     LaunchedEffect(Unit) {
         if (text != null && text.length >= 12) {
             val textWidth = with(density) { (text.length * fontSize.toPx()).toInt() }
