@@ -31,22 +31,43 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
     }
+
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += [
+                    '/META-INF/{AL2.0,LGPL2.1}',
+                    '/META-INF/LICENSE.md',
+                    '/META-INF/LICENSE-notice.md',
+                    '/META-INF/LICENSE',
+                    '/META-INF/NOTICE',
+                    '/META-INF/NOTICE.md'
+            ]
         }
     }
-}
 
+    testOptions {
+        packagingOptions {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+            animationsDisabled = true
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
+
+}
 
 dependencies {
 
@@ -58,33 +79,33 @@ dependencies {
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.material3
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso.core
-    androidTestImplementation platform(libs.androidx.compose.bom)
-    androidTestImplementation libs.androidx.ui.test.junit4
     debugImplementation libs.androidx.ui.tooling
     debugImplementation libs.androidx.ui.test.manifest
 
+//    androidTestImplementation libs.androidx.espresso.core
+//    androidTestImplementation libs.ui.test.junit4
+//    androidTestImplementation libs.androidx.core
+//    androidTestImplementation libs.androidx.junit
+//    androidTestImplementation libs.androidx.ui.test.junit4
+//    androidTestImplementation platform(libs.androidx.compose.bom)
+//    androidTestImplementation libs.mockk.android
+//    androidTestImplementation libs.androidx.runner
+//    androidTestImplementation libs.androidx.rules
+//    androidTestUtil libs.androidx.orchestrator
+
     // testing
     testImplementation libs.mockito.core
-    androidTestImplementation libs.mockito.android
+    testImplementation libs.junit
 
-
-    // retrofit
+    // Retrofit for networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    //coil
-    implementation (libs.coil.compose)
-//    implementation (libs.accompanist.coil)
-
-
-    // viewModel
+    // ViewModel for state management
     implementation libs.lifecycle.viewmodel.compose
 
-    //navigation
-    implementation(libs.androidx.navigation.compose)
+    // Navigation for Compose
+    implementation libs.androidx.navigation.compose
     implementation libs.androidx.runtime.livedata
-    implementation (libs.retrofit2.kotlin.coroutines.adapter)
+    implementation libs.retrofit2.kotlin.coroutines.adapter
 }

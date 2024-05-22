@@ -68,10 +68,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            MyApplicationTheme {
-            }
-        }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gpsStatusReceiver = GPSStatusReceiver()
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
