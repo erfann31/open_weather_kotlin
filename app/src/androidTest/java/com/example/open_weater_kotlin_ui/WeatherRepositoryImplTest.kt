@@ -13,10 +13,23 @@ import org.mockito.Mockito.mock
 import retrofit2.Response
 import kotlinx.coroutines.CompletableDeferred
 
+
+/**
+ * Unit tests for the WeatherRepositoryImpl class.
+ *
+ * @author Erfan Nasri
+ */
 @ExperimentalCoroutinesApi
 class WeatherRepositoryTest {
 
-
+    /**
+     * Tests the getCoordinatesByLocationName function of the WeatherRepositoryImpl.
+     *
+     * This test verifies that the API call to fetch coordinates by location name works correctly.
+     * It mocks the API response and checks if the repository returns the expected coordinates.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     fun test_getCoordinatesByLocationName() = runBlocking {
         val apiInterface = mock(ApiInterface::class.java)
@@ -42,6 +55,14 @@ class WeatherRepositoryTest {
         assertEquals(response, result.body())
     }
 
+    /**
+     * Tests the reverseGeocoding function of the WeatherRepositoryImpl.
+     *
+     * This test verifies that the API call to fetch location coordinates by latitude and longitude works correctly.
+     * It mocks the API response and checks if the repository returns the expected location coordinates.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     fun test_reverseGeocoding() = runBlocking {
         val apiInterface = mock(ApiInterface::class.java)
@@ -67,6 +88,15 @@ class WeatherRepositoryTest {
         assertEquals(response, result.body())
     }
 
+
+    /**
+     * Tests the getCurrentWeatherData function of the WeatherRepositoryImpl.
+     *
+     * This test verifies that the API call to fetch current weather data works correctly.
+     * It mocks the API response and checks if the repository returns the expected current weather data.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     fun test_getCurrentWeatherData() = runBlocking {
         val apiInterface = mock(ApiInterface::class.java)
@@ -98,6 +128,15 @@ class WeatherRepositoryTest {
         assertEquals(response, result.body())
     }
 
+
+    /**
+     * Tests the getDailyForecast function of the WeatherRepositoryImpl.
+     *
+     * This test verifies that the API call to fetch daily weather forecast data works correctly.
+     * It mocks the API response and checks if the repository returns the expected daily forecast data.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     fun test_getDailyForecast() = runBlocking {
         val apiInterface = mock(ApiInterface::class.java)
@@ -119,6 +158,14 @@ class WeatherRepositoryTest {
         assertEquals(response, result.body())
     }
 
+    /**
+     * Tests the getHourlyForecast function of the WeatherRepositoryImpl.
+     *
+     * This test verifies that the API call to fetch hourly weather forecast data works correctly.
+     * It mocks the API response and checks if the repository returns the expected hourly forecast data.
+     *
+     * @throws Exception if an error occurs during the test execution.
+     */
     @Test
     fun test_getHourlyForecast() = runBlocking {
         val apiInterface = mock(ApiInterface::class.java)
