@@ -28,6 +28,16 @@ import java.io.File
  * ViewModel class for managing weather data and related operations.
  *
  * @property repository The repository used for fetching weather data.
+ * @property listener Listener for location info updates.
+ * @property isMetric Mutable state to track the unit of measurement (metric/imperial).
+ * @property isLoading LiveData to track the loading state.
+ * @property locationsName LiveData to hold the names of locations.
+ * @property lat LiveData to hold the latitude.
+ * @property lon LiveData to hold the longitude.
+ * @property dailyForecast LiveData to hold daily forecast data.
+ * @property hourlyForecast LiveData to hold hourly forecast data.
+ * @property error LiveData to hold error messages.
+ * @property locationNameFlow Flow to handle location name updates.
  *
  * @author Erfan Nasri
  */
@@ -289,6 +299,12 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     companion object {
         @Volatile
         private var instance: WeatherViewModel? = null
+        /**
+         * Gets the singleton instance of WeatherViewModel.
+         *
+         * @param repository The repository used for fetching weather data.
+         * @return The singleton instance of WeatherViewModel.
+         */
 
         fun getInstance(repository: WeatherRepositoryImpl): WeatherViewModel {
             return instance ?: synchronized(this) {
