@@ -79,6 +79,7 @@ fun HourlyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
+    val isLoading by viewModel.isLoading.observeAsState(true)
     val isMetric = viewModel.isMetric.value
     val temp = remember {
         mutableStateOf(
@@ -99,8 +100,8 @@ fun HourlyForecastScreen(
         )
     }
     val hourlyForecast by viewModel.hourlyForecast.observeAsState()
-    if (hourlyForecast == null) {
-        // Display loading message
+    if (isLoading) {
+        // Display loading indicator
         GradientBackground {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = Color.White)

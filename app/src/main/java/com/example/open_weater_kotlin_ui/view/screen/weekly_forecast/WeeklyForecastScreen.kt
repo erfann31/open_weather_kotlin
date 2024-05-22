@@ -85,6 +85,7 @@ fun WeeklyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
+    val isLoading by viewModel.isLoading.observeAsState(true)
     /**
      * A variable that holds the current metric setting from the WeatherViewModel.
      * It determines whether the temperature and wind speed are displayed in metric units (Celsius, km/h) or imperial units (Fahrenheit, mph).
@@ -112,8 +113,8 @@ fun WeeklyForecastScreen(
 
     val dailyForecast by viewModel.dailyForecast.observeAsState()
 
-    if (dailyForecast == null) {
-        // نمایش پیام Loading
+    if (isLoading) {
+        // Display loading indicator
         GradientBackground {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = Color.White)
