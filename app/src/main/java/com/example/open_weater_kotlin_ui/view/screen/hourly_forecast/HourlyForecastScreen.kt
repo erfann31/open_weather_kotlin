@@ -1,5 +1,6 @@
 package com.example.open_weater_kotlin_ui.view.screen.hourly_forecast
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -90,6 +92,8 @@ fun HourlyForecastScreen(
             }
         )
     }
+    val context = LocalContext.current
+
     val windSpeed = remember {
         mutableStateOf(
             if (isMetric) {
@@ -100,6 +104,11 @@ fun HourlyForecastScreen(
         )
     }
     val hourlyForecast by viewModel.hourlyForecast.observeAsState()
+    val error by viewModel.error.observeAsState()
+
+    if (error != null) {
+        Toast.makeText(context, "An error occurred: $error", Toast.LENGTH_SHORT).show()
+    }
     if (isLoading) {
         // Display loading indicator
         GradientBackground {

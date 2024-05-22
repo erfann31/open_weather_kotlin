@@ -1,6 +1,7 @@
 package com.example.open_weater_kotlin_ui.view.screen.weekly_forecast
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -86,6 +88,7 @@ fun WeeklyForecastScreen(
     viewModel: WeatherViewModel = viewModel(),
 ) {
     val isLoading by viewModel.isLoading.observeAsState(true)
+
     /**
      * A variable that holds the current metric setting from the WeatherViewModel.
      * It determines whether the temperature and wind speed are displayed in metric units (Celsius, km/h) or imperial units (Fahrenheit, mph).
@@ -101,6 +104,8 @@ fun WeeklyForecastScreen(
             }
         )
     }
+    val context = LocalContext.current
+
     val windSpeed = remember {
         mutableStateOf(
             if (isMetric) {
@@ -111,6 +116,11 @@ fun WeeklyForecastScreen(
         )
     }
 
+    val error by viewModel.error.observeAsState()
+
+    if (error != null) {
+        Toast.makeText(context, "An error occurred: $error", Toast.LENGTH_SHORT).show()
+    }
     val dailyForecast by viewModel.dailyForecast.observeAsState()
 
     if (isLoading) {
@@ -308,7 +318,7 @@ fun WeeklyForecastScreen(
                 LazyRow(
                     modifier = Modifier.padding(vertical = 10.dp)
                 ) {
-                    item{Spacer(modifier = Modifier.width(10.dp))}
+                    item { Spacer(modifier = Modifier.width(10.dp)) }
                     items(items = dailyForecasts ?: emptyList()) { items ->
                         if (dailyForecasts != null) {
                             RowItems(
@@ -318,7 +328,7 @@ fun WeeklyForecastScreen(
                             )
                         }
                     }
-                    item{Spacer(modifier = Modifier.width(10.dp))}
+                    item { Spacer(modifier = Modifier.width(10.dp)) }
                 }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
