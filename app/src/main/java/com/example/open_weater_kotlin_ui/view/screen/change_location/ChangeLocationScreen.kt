@@ -87,15 +87,19 @@ fun ChangeLocationScreen(
             observer.stopWatching()
         }
     }
-    var isLoading by remember { mutableStateOf(false) }
+    val isLoading by viewModel.isLoading.observeAsState(false)
+    val error by viewModel.error.observeAsState()
 
+    if (error != null) {
+        Toast.makeText(context, "An error occurred: $error", Toast.LENGTH_SHORT).show()
+    }
     /**
      * Sets a listener for location info fetching events. When the location info is fetched,
      * loading is stopped and the navigation to the "hourly_forecast" screen is triggered.
      */
     viewModel.listener = object : LocationInfoListener {
         override fun onLocationInfoFetched() {
-            isLoading = false
+            viewModel.clearLocationsName()
             navHostController.navigate("hourly_forecast")
         }
     }
@@ -110,7 +114,8 @@ fun ChangeLocationScreen(
             delay(5000)
             if (isLoading) {
                 Toast.makeText(context, "Request timed out. Redirecting...", Toast.LENGTH_SHORT).show()
-                isLoading = false
+                viewModel.clearLocationsName()
+                navHostController.navigate("hourly_forecast")
             }
         }
     }
@@ -145,7 +150,6 @@ fun ChangeLocationScreen(
                 placeholder = "Search for a city...",
                 text = locationName,
                 onSearchClicked = {
-                    isLoading = true
                     viewModel.getLocationCoordinates(locationName)
                 },
                 onTextChanged = { newText ->
@@ -181,7 +185,6 @@ fun ChangeLocationScreen(
                     items(locationsName) { cityName ->
                         CityWidget(text = cityName,
                             onClick = {
-                                isLoading = true
                                 viewModel.getLocationCoordinates(cityName)
                             },
                             isAdd = true,
@@ -203,7 +206,6 @@ fun ChangeLocationScreen(
                                 viewModel.deleteCityFromFile(context, cityName)
                             },
                             onClick = {
-                                isLoading = true
                                 viewModel.getLocationCoordinates(cityName)
                             },
                         )
@@ -279,7 +281,6 @@ fun ChangeLocationScreen(
                                 text = "Metric", style = TextStyle(color = Color.White, fontSize = 18.sp)
                             )
                             Switch(checked = !viewModel.isMetric.value, onCheckedChange = {
-                                isLoading = true
                                 viewModel.toggleUnit()
                             })
                             Text(
