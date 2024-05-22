@@ -17,15 +17,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.open_weater_kotlin_ui.model.broadcast.GPSStatusReceiver
 import com.example.open_weater_kotlin_ui.model.repository.WeatherRepositoryImpl
@@ -33,13 +42,14 @@ import com.example.open_weater_kotlin_ui.model.utils.RetrofitInstance
 import com.example.open_weater_kotlin_ui.view.navigation.Navigator
 import com.example.open_weater_kotlin_ui.view.theme.MyApplicationTheme
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
-import com.example.open_weater_kotlin_ui.view_model.factory.WeatherViewModelFactory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
+
+private var isResolvingShortLink by mutableStateOf(false)
 
 class MainActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
@@ -58,6 +68,10 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+            }
+        }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gpsStatusReceiver = GPSStatusReceiver()
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
@@ -102,8 +116,8 @@ class MainActivity : ComponentActivity() {
         } else {
             val apiInterface = RetrofitInstance.api
             val weatherRepository = WeatherRepositoryImpl(apiInterface)
-            val factory = WeatherViewModelFactory(weatherRepository)
-            val viewModel = ViewModelProvider(this, factory)[WeatherViewModel::class.java]
+            val viewModel = WeatherViewModel.getInstance(weatherRepository)
+
 
             requestLocationUpdates(viewModel)
         }
@@ -136,7 +150,7 @@ class MainActivity : ComponentActivity() {
                 viewModel.setLatLon(latitude, longitude)
 
                 setContent {
-                    MyApplicationTheme {
+                    WeatherApp{
                         Surface(
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colorScheme.background
@@ -178,6 +192,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     private fun resolveShortLink(shortLink: String) {
+        isResolvingShortLink = true
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val url = URL(shortLink)
@@ -187,6 +202,8 @@ class MainActivity : ComponentActivity() {
                 extractLatLonFromUrl(originalUrl)
             } catch (e: Exception) {
                 Log.e("ResolveShortLink", "Error resolving short link: ${e.message}")
+            } finally {
+                isResolvingShortLink = false
             }
         }
     }
@@ -203,13 +220,13 @@ class MainActivity : ComponentActivity() {
 
             val apiInterface = RetrofitInstance.api
             val weatherRepository = WeatherRepositoryImpl(apiInterface)
-            val factory = WeatherViewModelFactory(weatherRepository)
-            val viewModel = ViewModelProvider(this, factory)[WeatherViewModel::class.java]
+            val viewModel = WeatherViewModel.getInstance(weatherRepository)
+
 
             if (locationName.matches(Regex("^[a-zA-Z].*")) == true) {
                 viewModel.getLocationCoordinates(locationName)
                 setContent {
-                    MyApplicationTheme {
+                    WeatherApp {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colorScheme.background
@@ -249,8 +266,26 @@ class MainActivity : ComponentActivity() {
 fun WeatherApp(content: @Composable () -> Unit) {
     MyApplicationTheme {
         Surface {
-            content()
+            if (isResolvingShortLink) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(
+                                    colorResource(R.color.customCyan),
+                                    colorResource(R.color.customBlue)
+                                )
+                            )
+                        ), contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Color.White)
+                }
+            } else {
+                content()
+            }
         }
     }
 }
+
 
