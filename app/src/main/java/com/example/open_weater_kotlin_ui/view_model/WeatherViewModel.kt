@@ -36,9 +36,9 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
 
     var isMetric = mutableStateOf(true)
         private set
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _locationDetails = MutableLiveData<List<LocationCoordinate>>()
-    val locationDetails: LiveData<List<LocationCoordinate>> = _locationDetails
 
     private val _locationsName = MutableLiveData<List<String>>()
     val locationsName: LiveData<List<String>> = _locationsName
@@ -50,10 +50,8 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     val lon: LiveData<Double> = _lon
 
     private val _locationCoordinates = MutableLiveData<List<LocationCoordinate>>()
-    val locationCoordinates: LiveData<List<LocationCoordinate>> = _locationCoordinates
 
     private val _currentWeather = MutableLiveData<CurrentWeather>()
-    val currentWeather: LiveData<CurrentWeather> = _currentWeather
 
     private val _dailyForecast = MutableLiveData<ForecastDaily>()
     val dailyForecast: LiveData<ForecastDaily> = _dailyForecast
@@ -178,9 +176,11 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
      * @param lat The latitude of the location.
      * @param lon The longitude of the location.
      */
-    fun updateWeatherData(lat: Double, lon: Double) {
+    private fun updateWeatherData(lat: Double, lon: Double) {
         viewModelScope.launch {
+            _isLoading.value = true
             fetchWeatherData(lat, lon)
+            _isLoading.value = false
         }
     }
 
@@ -191,6 +191,9 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
      */
     fun getLocationCoordinates(locationName: String) {
         viewModelScope.launch {
+
+            _isLoading.value = true
+
             val response = repository.getCoordinatesByLocationName(locationName)
             if (response.isSuccessful) {
                 _locationCoordinates.value = response.body()
@@ -200,6 +203,9 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
                     _lon.value = coordinates.lon
                     fetchWeatherData(coordinates.lat, coordinates.lon)
                 }
+
+                _isLoading.value = false
+
             } else {
                 //todo Handle error
             }
@@ -209,7 +215,9 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     fun updateLocationName(locationName: String) {
         locationNameFlow.value = locationName
     }
-
+    fun clearLocationsName() {
+        _locationsName.value = emptyList()
+    }
     /**
      * Fills the list of location names based on the given location name.
      *
@@ -260,5 +268,15 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
             _hourlyForecast.value = hourlyForecastResponse.body()
         }
         listener?.onLocationInfoFetched()
+    }
+    companion object {
+        @Volatile
+        private var instance: WeatherViewModel? = null
+
+        fun getInstance(repository: WeatherRepositoryImpl): WeatherViewModel {
+            return instance ?: synchronized(this) {
+                instance ?: WeatherViewModel(repository).also { instance = it }
+            }
+        }
     }
 }
