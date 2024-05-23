@@ -24,6 +24,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -32,7 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
@@ -48,6 +51,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Locale
 
 private var isResolvingShortLink by mutableStateOf(false)
 
@@ -68,6 +72,9 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val configuration = resources.configuration
+        configuration.setLocale(Locale.ENGLISH)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         gpsStatusReceiver = GPSStatusReceiver()
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
@@ -146,7 +153,7 @@ class MainActivity : ComponentActivity() {
                 viewModel.setLatLon(latitude, longitude)
 
                 setContent {
-                    WeatherApp{
+                    WeatherApp {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colorScheme.background
@@ -243,7 +250,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 setContent {
-                    MyApplicationTheme {
+                    WeatherApp {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colorScheme.background
@@ -260,25 +267,27 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WeatherApp(content: @Composable () -> Unit) {
-    MyApplicationTheme {
-        Surface {
-            if (isResolvingShortLink) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                listOf(
-                                    colorResource(R.color.customCyan),
-                                    colorResource(R.color.customBlue)
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        MyApplicationTheme {
+            Surface {
+                if (isResolvingShortLink) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    listOf(
+                                        colorResource(R.color.customCyan),
+                                        colorResource(R.color.customBlue)
+                                    )
                                 )
-                            )
-                        ), contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = Color.White)
+                            ), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = Color.White)
+                    }
+                } else {
+                    content()
                 }
-            } else {
-                content()
             }
         }
     }
