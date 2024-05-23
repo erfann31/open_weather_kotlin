@@ -60,6 +60,7 @@ import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.Gri
 import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.widgets.RowItems
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
+import java.util.Locale
 
 /**
  * A MutableIntState variable that holds the ID of the selected item in the weekly forecast list.
@@ -159,8 +160,14 @@ fun WeeklyForecastScreen(
         val w_box1 = mutableMapOf<String, Any?>(
             "title" to " Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
-            "txt1" to "%.1f".format(w_selectedItem?.feelsLike?.day),
-            "txt2" to "${"%.1f".format(w_selectedItem?.temp?.max)}° / ${"%.1f".format(w_selectedItem?.temp?.min)}°",
+            "txt1" to String.format(Locale.ENGLISH, "%.1f", w_selectedItem?.feelsLike?.day),
+            "txt2" to "${String.format(Locale.ENGLISH, "%.1f", w_selectedItem?.temp?.max)}° / ${
+                String.format(
+                    Locale.ENGLISH,
+                    "%.1f",
+                    w_selectedItem?.temp?.min
+                )
+            }°",
             "txt3" to " ${temp.value}"
         )
 
@@ -192,7 +199,7 @@ fun WeeklyForecastScreen(
         val w_box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to "%.1f".format(w_selectedItem?.speed),
+            "txt1" to String.format(Locale.ENGLISH, "%.1f",w_selectedItem?.speed),
             "txt2" to "To ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}",
             "txt3" to " ${windSpeed.value}"
         )

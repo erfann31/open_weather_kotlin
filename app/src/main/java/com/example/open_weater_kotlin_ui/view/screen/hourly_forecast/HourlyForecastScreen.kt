@@ -58,6 +58,7 @@ import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.Gri
 import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.RowItems
 import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
+import java.util.Locale
 
 /**
  * A mutable state integer representing the ID of the selected item in the hourly forecast list.
@@ -150,8 +151,14 @@ fun HourlyForecastScreen(
         val box1 = mutableMapOf<String, Any?>(
             "title" to "Real Feel",
             "icon" to R.drawable.temperature, // Use resource ID directly
-            "txt1" to "%.1f".format(selectedItem?.main?.feelsLike),
-            "txt2" to "${"%.1f".format(selectedItem?.main?.tempMax)}° / ${"%.1f".format(selectedItem?.main?.tempMin)}°",
+            "txt1" to String.format(Locale.ENGLISH, "%.1f", selectedItem?.main?.feelsLike),
+            "txt2" to "${String.format(Locale.ENGLISH, "%.1f", selectedItem?.main?.tempMax)}° / ${
+                String.format(
+                    Locale.ENGLISH,
+                    "%.1f",
+                    selectedItem?.main?.tempMin
+                )
+            }°",
             "txt3" to " ${temp.value}"
         )
 
@@ -183,7 +190,7 @@ fun HourlyForecastScreen(
         val box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to "%.1f".format(selectedItem?.wind?.speed),
+            "txt1" to String.format(Locale.ENGLISH, "%.1f", selectedItem?.wind?.speed),
             "txt2" to "To ${selectedItem?.wind?.deg?.let { getGeographicalDirection(it) }}",
             "txt3" to " ${windSpeed.value}"
         )
@@ -246,7 +253,8 @@ fun HourlyForecastScreen(
                     }
                     Row(
                         horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.Bottom)
+                        verticalAlignment = Alignment.Bottom
+                    )
                     {
                         Text(
                             text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
@@ -302,19 +310,17 @@ fun HourlyForecastScreen(
                         )
                     }
                 }
-
-
-                    LazyRow(
-                        modifier = Modifier.padding(vertical = 10.dp)
-                    ) {
-                        item { Spacer(modifier = Modifier.width(10.dp)) }
-                        items(items = hourlyForecasts ?: emptyList()) { items ->
-                            if (hourlyForecasts != null) {
-                                RowItems(items, hourlyForecasts.indexOf(items), viewModel)
-                            }
+                LazyRow(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    item { Spacer(modifier = Modifier.width(10.dp)) }
+                    items(items = hourlyForecasts ?: emptyList()) { items ->
+                        if (hourlyForecasts != null) {
+                            RowItems(items, hourlyForecasts.indexOf(items), viewModel)
                         }
-                        item { Spacer(modifier = Modifier.width(10.dp)) }
                     }
+                    item { Spacer(modifier = Modifier.width(10.dp)) }
+                }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.padding(10.dp),
