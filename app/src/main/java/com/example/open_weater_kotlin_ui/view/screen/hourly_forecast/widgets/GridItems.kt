@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -78,7 +79,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
     LaunchedEffect(Unit) {
         if (text != null && text.length >= 12) {
             val textWidth = with(density) { (text.length * fontSize.toPx()).toInt() }
-            val containerWidth = with(density) { 10.dp.toPx().toInt() }
+            val containerWidth = with(density) { 180.dp.toPx().toInt() }
             val scrollDistance = (textWidth - containerWidth).coerceAtLeast(0)
 
             if (scrollDistance > 0) {
@@ -99,7 +100,9 @@ fun GridItems(item: MutableMap<String, Any?>) {
         }
     }
     Card(
-        modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp),
+        modifier = Modifier
+            .padding(vertical = 5.dp, horizontal = 5.dp)
+            .aspectRatio(1f),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
         elevation = CardDefaults.cardElevation(5.dp)
