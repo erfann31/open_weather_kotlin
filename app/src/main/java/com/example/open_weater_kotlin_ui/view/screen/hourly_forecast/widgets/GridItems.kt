@@ -79,7 +79,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
     LaunchedEffect(Unit) {
         if (text != null && text.length >= 12) {
             val textWidth = with(density) { (text.length * fontSize.toPx()).toInt() }
-            val containerWidth = with(density) { 180.dp.toPx().toInt() }
+            val containerWidth = with(density) { 250.dp.toPx().toInt() }
             val scrollDistance = (textWidth - containerWidth).coerceAtLeast(0)
 
             if (scrollDistance > 0) {
