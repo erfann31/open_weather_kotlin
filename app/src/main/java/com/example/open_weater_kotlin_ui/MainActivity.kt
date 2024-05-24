@@ -57,7 +57,10 @@ import java.net.URL
 import java.util.Locale
 
 private var isResolvingShortLink by mutableStateOf(false)
-
+/**
+ * MainActivity serves as the entry point of the application and manages the main functionality,
+ * including handling permissions, GPS status, and UI rendering.
+ */
 class MainActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -155,12 +158,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
+    /**
+     * Checks if GPS is enabled.
+     *
+     * @return true if GPS is enabled, false otherwise.
+     */
     private fun isGPSEnabled(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
+    /**
+     * Requests location updates for weather data retrieval.
+     *
+     * @param viewModel the ViewModel for weather data.
+     */
     private fun requestLocationUpdates(viewModel: WeatherViewModel) {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
@@ -210,6 +222,11 @@ class MainActivity : ComponentActivity() {
         handleShareIntent(intent)
     }
 
+    /**
+     * Handles the shared intent, extracts the shared text, and resolves short links if present.
+     *
+     * @param intent The shared intent.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun handleShareIntent(intent: Intent?) {
         if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
@@ -222,6 +239,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Resolves a short link to its original URL and extracts latitude and longitude if available.
+     *
+     * @param shortLink The short link to resolve.
+     */
     @OptIn(DelicateCoroutinesApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     private fun resolveShortLink(shortLink: String) {
@@ -241,6 +263,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
+    /**
+     * Extracts latitude and longitude from the original URL and initiates weather data retrieval.
+     *
+     * @param originalUrl The original URL containing latitude and longitude information.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun extractLatLonFromUrl(originalUrl: String?) {
         originalUrl?.let {
@@ -295,6 +323,11 @@ class MainActivity : ComponentActivity() {
 
 }
 
+/**
+ * Composable function for the Weather App.
+ *
+ * @param content The content to display.
+ */
 @Composable
 fun WeatherApp(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
