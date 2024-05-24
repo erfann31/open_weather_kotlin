@@ -227,7 +227,8 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
                 _isLoading.value = false
 
             } else {
-                //todo Handle error
+                val errorBody = response.errorBody()?.string()
+                _error.postValue(errorBody ?: "Unknown error occurred")
             }
         }
     }
@@ -300,6 +301,7 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     companion object {
         @Volatile
         private var instance: WeatherViewModel? = null
+
         /**
          * Gets the singleton instance of WeatherViewModel.
          *
