@@ -98,7 +98,7 @@ fun ChangeLocationScreen(
     viewModel.listener = object : LocationInfoListener {
         override fun onLocationInfoFetched() {
             viewModel.clearLocationsName()
-            navHostController.navigate("hourly_forecast")
+            navHostController.navigate("home_screen")
         }
     }
 
