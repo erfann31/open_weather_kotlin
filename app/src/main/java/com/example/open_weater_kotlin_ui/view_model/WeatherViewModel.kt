@@ -46,6 +46,9 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     var isMetric = mutableStateOf(true)
         private set
 
+    var tempUnit = mutableStateOf("℃")
+        private set
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -77,9 +80,18 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    init {
+        tempUnit.value = if (isMetric.value) "℃" else "°F"
+        locationNameFlow
+            .filter { it.isNotEmpty() }
+            .onEach { fillLocationsName(it) }
+            .launchIn(viewModelScope)
+    }
+
     fun toggleUnit() {
         isMetric.value = !isMetric.value
         updateWeatherData(lat.value!!, lon.value!!)
+        tempUnit.value = if (isMetric.value) "℃" else "°F"
     }
 
 
@@ -166,12 +178,6 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
         }
     }
 
-    init {
-        locationNameFlow
-            .filter { it.isNotEmpty() }
-            .onEach { fillLocationsName(it) }
-            .launchIn(viewModelScope)
-    }
 
     /**
      * Sets the latitude and longitude for the current location.

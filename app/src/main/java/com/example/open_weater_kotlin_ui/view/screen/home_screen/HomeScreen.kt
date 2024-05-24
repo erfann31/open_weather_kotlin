@@ -25,8 +25,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -55,16 +53,7 @@ fun HomeScreen(
     navHostController: NavHostController, viewModel: WeatherViewModel
 ) {
     val isLoading by viewModel.isLoading.observeAsState(true)
-    val isMetric = viewModel.isMetric.value
-    val temp = remember {
-        mutableStateOf(
-            if (isMetric) {
-                "℃"
-            } else {
-                "°F"
-            }
-        )
-    }
+    val tempUnit by viewModel.tempUnit
     val context = LocalContext.current
 
     val current by viewModel.currentWeather.observeAsState()
@@ -133,7 +122,8 @@ fun HomeScreen(
                                     horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "${current?.main?.temp?.toInt().toString()}°", style = TextStyle(
+                                        text = current?.main?.temp?.toInt().toString(),
+                                        style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 44.sp,
@@ -141,7 +131,8 @@ fun HomeScreen(
                                         )
                                     )
                                     Text(
-                                        text = if (temp.value == "℃") " c" else " F", style = TextStyle(
+                                        text = tempUnit,
+                                        style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 36.sp,

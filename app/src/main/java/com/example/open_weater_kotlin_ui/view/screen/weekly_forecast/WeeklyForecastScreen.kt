@@ -102,15 +102,8 @@ fun WeeklyForecastScreen(
      */
     val isMetric = viewModel.isMetric.value
 
-    val temp = remember {
-        mutableStateOf(
-            if (isMetric) {
-                "℃"
-            } else {
-                "°F"
-            }
-        )
-    }
+    val temp by viewModel.tempUnit
+
     val context = LocalContext.current
 
     val windSpeed = remember {
@@ -174,7 +167,7 @@ fun WeeklyForecastScreen(
                     w_selectedItem?.temp?.min
                 )
             }°",
-            "txt3" to " ${temp.value}"
+            "txt3" to " ${temp}"
         )
 
         /**
@@ -286,7 +279,7 @@ fun WeeklyForecastScreen(
                                 )
 
                                 Text(
-                                    text = if (temp.value == "℃") "c" else "F", style = TextStyle(
+                                    text = if (temp == "℃") "c" else "F", style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,

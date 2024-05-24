@@ -88,17 +88,9 @@ fun HourlyForecastScreen(
     val screenWidth = configuration.screenWidthDp.dp
 
     val isLoading by viewModel.isLoading.observeAsState(true)
-    val isMetric = viewModel.isMetric.value
-    val temp = remember {
-        mutableStateOf(
-            if (isMetric) {
-                "℃"
-            } else {
-                "°F"
-            }
-        )
-    }
+    val temp by viewModel.tempUnit
     val context = LocalContext.current
+    val isMetric = viewModel.isMetric.value
 
     val windSpeed = remember {
         mutableStateOf(
@@ -164,7 +156,7 @@ fun HourlyForecastScreen(
                     selectedItem?.main?.tempMin
                 )
             }°",
-            "txt3" to " ${temp.value}"
+            "txt3" to " ${temp}"
         )
 
         /**
@@ -273,7 +265,7 @@ fun HourlyForecastScreen(
                                     )
                                 )
                                 Text(
-                                    text = if (temp.value == "℃") "c" else "F",
+                                    text = if (temp == "℃") "c" else "F",
                                     style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
