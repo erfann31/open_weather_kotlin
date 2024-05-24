@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
  */
 
 @Composable
-fun GridItems(item: MutableMap<String, Any?>) {
+fun GridItems(item: MutableMap<String, Any?>,modifier: Modifier=Modifier) {
     val scrollState = rememberScrollState(0)
     val coroutineScope = rememberCoroutineScope()
     val animationDuration = 3000
@@ -100,7 +100,7 @@ fun GridItems(item: MutableMap<String, Any?>) {
         }
     }
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 5.dp, horizontal = 5.dp)
             .aspectRatio(1f),
         shape = RoundedCornerShape(20.dp),
