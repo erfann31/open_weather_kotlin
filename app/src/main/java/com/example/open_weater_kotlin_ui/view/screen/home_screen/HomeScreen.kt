@@ -258,16 +258,17 @@ fun HomeScreen(
                 }, item = {
 
                         Switch(
+                            modifier = Modifier.scale(scaleY = 0.9f, scaleX = 1f),
                             checked = !viewModel.isMetric.value, onCheckedChange = {
                                 viewModel.toggleUnit()
                             }, colors = SwitchDefaults.colors(
                                 uncheckedBorderColor = Color.Gray,
-                                checkedBorderColor = colorResource(R.color.customCard),
                                 checkedThumbColor = Color.White,
                                 uncheckedThumbColor = Color.LightGray,
                                 uncheckedTrackColor = Color.Gray,
-                                checkedTrackColor = colorResource(R.color.customCard)
-                            )
+                                checkedTrackColor = colorResource(R.color.customBlue)
+                            ),
+
                         )
 
                 }
