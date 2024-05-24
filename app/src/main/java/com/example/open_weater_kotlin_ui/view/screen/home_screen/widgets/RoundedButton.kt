@@ -12,6 +12,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.open_weater_kotlin_ui.R
 
+/**
+ * Composable function for rendering a rounded button.
+ *
+ * This function creates a rounded button with customizable text, icon, and click behavior.
+ *
+ * @param modifier Modifier for customizing the button layout.
+ * @param text Lambda function for defining the text content of the button.
+ * @param item Lambda function for defining the icon or additional content of the button.
+ * @param onClick Callback function for handling button click events.
+ *
+ * @author Erfan Nasri
+ */
 @Composable
 fun RoundedButton(
     modifier: Modifier = Modifier

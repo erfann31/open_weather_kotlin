@@ -48,6 +48,18 @@ import com.example.open_weater_kotlin_ui.model.utils.Convertor
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 import java.util.Locale
 
+/**
+ * Composable function for the Home Screen.
+ *
+ * This function displays the main screen of the weather application.
+ * It includes the current weather information and buttons for navigating to hourly and weekly forecasts.
+ * Additionally, it features a switch for toggling between metric and imperial temperature units.
+ *
+ * @param navHostController The navigation controller used for navigating between screens.
+ * @param viewModel The view model containing the data and logic for the Home Screen.
+ *
+ * @author Motahare Vakili & Erfan Nasri
+ */
 @Composable
 fun HomeScreen(
     navHostController: NavHostController, viewModel: WeatherViewModel
