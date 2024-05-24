@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -339,6 +340,7 @@ fun WeeklyForecastScreen(
                         item { Spacer(modifier = Modifier.width(10.dp)) }
 
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
                 item {
                     FlowRow(
@@ -349,7 +351,7 @@ fun WeeklyForecastScreen(
                         w_boxList.forEach { box ->
                             GridItems(
                                 item = box, modifier = Modifier
-                                    .size((screenWidth / 2) - 5.dp)
+                                    .size((screenWidth / 2) - 8.dp)
                                     .padding(
                                         vertical = 5.dp,
                                         horizontal
