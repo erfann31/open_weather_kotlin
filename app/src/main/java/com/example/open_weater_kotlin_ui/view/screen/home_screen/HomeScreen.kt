@@ -1,5 +1,6 @@
 package com.example.open_weater_kotlin_ui.view.screen.home_screen
 
+import RoundedButton
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -64,15 +66,6 @@ fun HomeScreen(navHostController: NavHostController
     }
     val context = LocalContext.current
 
-    val windSpeed = remember {
-        mutableStateOf(
-            if (isMetric) {
-                "km/h"
-            } else {
-                "mph"
-            }
-        )
-    }
     val current by viewModel.currentWeather.observeAsState()
     val dailyForecast by viewModel.dailyForecast.observeAsState()
     val error by viewModel.error.observeAsState()
@@ -217,7 +210,94 @@ fun HomeScreen(navHostController: NavHostController
                                 )
                             }
                         }
+                        Spacer(modifier = Modifier.height(150.dp))
+                        RoundedButton(onClick = { navHostController.navigate("hourly_forecast") }, text = {
+                            Text(
+                                text = "Hourly Forecast", style = TextStyle(
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                )
+                            )
+                        },
+                            item = {
+                                Icon(
+                                    imageVector = Icons.Default.KeyboardArrowRight,
+                                    contentDescription = "go_to_hourly_forecast_screen",
+                                    Modifier.size(35.dp)
+                                )
+                            }
+                        )
 
+
+
+                        Spacer(modifier = Modifier.height(20.dp))
+                        RoundedButton(onClick = { navHostController.navigate("weekly_forecast") }, text = {
+                            Text(
+                                text = "Weekly Forecast", style = TextStyle(
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                )
+                            )
+                        },
+                            item = {
+                                Icon(
+                                    imageVector = Icons.Default.KeyboardArrowRight,
+                                    contentDescription = "go_to_hourly_forecast_screen",
+                                    Modifier.size(35.dp)
+                                )
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        RoundedButton(onClick = {
+                            viewModel.toggleUnit()
+                        }, text = {
+                            Row {
+                                Text(
+                                    text = "Metric Switch", style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = "℃ / °F",
+                                    style = TextStyle(
+                                        color = colorResource(R.color.unitColor),
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
+                                )
+                            }
+                        },
+                            item = {
+                                if (isLoading) {
+                                    CircularProgressIndicator(
+                                        color = Color.White,
+                                    )
+                                } else {
+                                    Switch(
+                                        checked = !viewModel.isMetric.value, onCheckedChange = {
+                                            viewModel.toggleUnit()
+                                        },
+                                        colors = SwitchDefaults.colors(
+                                            uncheckedBorderColor =Color.Gray ,
+                                            checkedBorderColor =colorResource(R.color.customCard) ,
+                                            checkedThumbColor = Color.White,
+                                            uncheckedThumbColor = Color.LightGray,
+                                            uncheckedTrackColor = Color.Gray,
+                                            checkedTrackColor = colorResource(R.color.customCard)
+                                        )
+                                    )
+                                }
+                            }
+                        )
 
                     }
                 }
