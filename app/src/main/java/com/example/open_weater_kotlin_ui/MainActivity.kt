@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -32,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -58,7 +61,9 @@ private var isResolvingShortLink by mutableStateOf(false)
 class MainActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
+
     ) { isGranted: Boolean ->
+
         if (isGranted) {
             checkGPS()
         } else {
@@ -107,11 +112,15 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun checkGPS() {
+        setContent {
+            SplashScreenContent()
+        }
         if (isGPSEnabled()) {
             Toast.makeText(this, "Getting information from GPS...", Toast.LENGTH_SHORT).show()
         }
 
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Toast.makeText(this, "Please enable GPS", Toast.LENGTH_LONG).show()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
@@ -125,6 +134,27 @@ class MainActivity : ComponentActivity() {
             requestLocationUpdates(viewModel)
         }
     }
+
+    @Composable
+    fun SplashScreenContent() {
+        MyApplicationTheme {
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+
+            ) {
+                // Customize your splash screen UI here
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.app_icon),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    tint = Color.White
+                )
+            }
+        }
+    }
+
 
     private fun isGPSEnabled(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager

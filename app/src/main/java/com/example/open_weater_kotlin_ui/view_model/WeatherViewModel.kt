@@ -81,7 +81,7 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     val error: LiveData<String> = _error
 
     init {
-        tempUnit.value = if (isMetric.value) "℃" else "°F"
+        tempUnit.value = if (isMetric.value) " ℃" else " °F"
         locationNameFlow
             .filter { it.isNotEmpty() }
             .onEach { fillLocationsName(it) }
@@ -91,7 +91,7 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     fun toggleUnit() {
         isMetric.value = !isMetric.value
         updateWeatherData(lat.value!!, lon.value!!)
-        tempUnit.value = if (isMetric.value) "℃" else "°F"
+        tempUnit.value = if (isMetric.value) " ℃" else " °F"
     }
 
 
