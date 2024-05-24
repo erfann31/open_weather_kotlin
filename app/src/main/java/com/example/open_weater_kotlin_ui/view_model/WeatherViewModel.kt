@@ -62,6 +62,7 @@ class WeatherViewModel(private val repository: WeatherRepositoryImpl) : ViewMode
     private val _locationCoordinates = MutableLiveData<List<LocationCoordinate>>()
 
     private val _currentWeather = MutableLiveData<CurrentWeather>()
+    val currentWeather: LiveData<CurrentWeather> = _currentWeather
 
     private val _dailyForecast = MutableLiveData<ForecastDaily>()
     val dailyForecast: LiveData<ForecastDaily> = _dailyForecast
