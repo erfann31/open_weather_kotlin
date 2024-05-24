@@ -29,6 +29,12 @@ import androidx.core.content.ContextCompat
 import com.example.open_weater_kotlin_ui.MainActivity
 import com.example.open_weater_kotlin_ui.R
 
+/**
+ * SplashActivity displays a splash screen while checking for location permissions
+ * and GPS availability before navigating to the main activity.
+ *
+ * @author Erfan Nasri
+ */
  class SplashActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -78,6 +84,9 @@ import com.example.open_weater_kotlin_ui.R
         }, 3000)
     }
 
+     /**
+      * Checks if GPS is enabled, and if not, prompts the user to enable it.
+      */
     private fun checkGPS() {
         if (isGPSEnabled()) {
             navigateToMainActivity()
@@ -87,6 +96,11 @@ import com.example.open_weater_kotlin_ui.R
         }
     }
 
+     /**
+      * Checks if GPS is enabled.
+      *
+      * @return true if GPS is enabled, false otherwise.
+      */
     private fun isGPSEnabled(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -97,6 +111,9 @@ import com.example.open_weater_kotlin_ui.R
         checkLocationPermission()
     }
 
+     /**
+      * Checks location permission and proceeds accordingly.
+      */
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
