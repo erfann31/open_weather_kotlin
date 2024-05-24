@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
  */
 
 @Composable
-fun GridItems(item: MutableMap<String, Any?>,modifier: Modifier=Modifier) {
+fun GridItems(item: MutableMap<String, Any?>, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState(0)
     val coroutineScope = rememberCoroutineScope()
     val animationDuration = 3000
