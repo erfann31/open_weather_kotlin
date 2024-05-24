@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -244,11 +242,10 @@ fun ChangeLocationScreen(
                         }
                     }
                     item {
-                        //todo navigate to home
                         TextButton(modifier = Modifier
                             .align(alignment = Alignment.CenterHorizontally)
                             .fillMaxWidth(), onClick = {
-                            navHostController.navigate("weekly_forecast")
+                            navHostController.navigate("home_screen")
                         })
                         {
                             Icon(
@@ -265,26 +262,6 @@ fun ChangeLocationScreen(
                                     fontSize = 18.sp,
                                     fontFamily = FontFamily(Font(R.font.poppins_semibold))
                                 )
-                            )
-                        }
-                    }
-                    //todo remove
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Metric", style = TextStyle(color = Color.White, fontSize = 18.sp)
-                            )
-                            Switch(checked = !viewModel.isMetric.value, onCheckedChange = {
-                                viewModel.toggleUnit()
-                            })
-                            Text(
-                                text = "Imperial", style = TextStyle(color = Color.White, fontSize = 18.sp)
                             )
                         }
                     }
