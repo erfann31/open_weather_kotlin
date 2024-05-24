@@ -7,16 +7,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -82,12 +83,17 @@ val w_selectedItemId = mutableIntStateOf(0)
  * @author Motahare Vakili
  */
 
+@OptIn(ExperimentalLayoutApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeeklyForecastScreen(
     navHostController: NavHostController,
     viewModel: WeatherViewModel = viewModel(),
 ) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+
+
     val isLoading by viewModel.isLoading.observeAsState(true)
 
     /**
@@ -199,7 +205,7 @@ fun WeeklyForecastScreen(
         val w_box3 = mutableMapOf<String, Any?>(
             "title" to "Wind",
             "icon" to R.drawable.wind, // Use resource ID directly
-            "txt1" to String.format(Locale.ENGLISH, "%.1f",w_selectedItem?.speed),
+            "txt1" to String.format(Locale.ENGLISH, "%.1f", w_selectedItem?.speed),
             "txt2" to "To ${w_selectedItem?.deg?.let { getGeographicalDirection(it) }}",
             "txt3" to " ${windSpeed.value}"
         )
@@ -235,114 +241,129 @@ fun WeeklyForecastScreen(
                 .padding(top = 6.dp),
         )
         {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.padding(10.dp)
-                )
-                {
-                    dailyForecast?.city?.name?.let {
-                        Text(
-                            modifier = Modifier.padding(horizontal = 60.dp),
-                            text = it,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            style = TextStyle(
-                                textAlign = TextAlign.Center,
-                                color = Color.White,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 30.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                            )
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier.padding(10.dp)
                         )
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.Bottom,
-                    )
-                    {
-                        Text(
-                            text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()}°",
-                            style = TextStyle(
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_light))
-                            )
-                        )
-
-                        Text(
-                            text = if (temp.value == "℃") "c" else "F", style = TextStyle(
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_light))
-                            )
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        val id = dailyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
-                        if (id != null) {
-                            Text(
-                                text = if (id == 800) "Clear" else getStatus(id / 100),
-                                style = TextStyle(
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily(Font(R.font.poppins_light))
+                        {
+                            dailyForecast?.city?.name?.let {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 60.dp),
+                                    text = it,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = TextStyle(
+                                        textAlign = TextAlign.Center,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 30.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
                                 )
+                            }
+                            Row(
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.Bottom,
                             )
+                            {
+                                Text(
+                                    text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()}°",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+
+                                Text(
+                                    text = if (temp.value == "℃") "c" else "F", style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                val id = dailyForecasts?.get(0)?.weather?.get(0)?.id?.toInt()
+                                if (id != null) {
+                                    Text(
+                                        text = if (id == 800) "Clear" else getStatus(id / 100),
+                                        style = TextStyle(
+                                            color = Color.White,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 18.sp,
+                                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                                        )
+                                    )
+                                }
+                            }
+
+                            TextButton(onClick = { navHostController.navigate("change_location") }) {
+                                Icon(
+                                    modifier = Modifier.scale(0.8f),
+                                    painter = painterResource(id = R.drawable.location),
+                                    contentDescription = null,
+                                    tint = colorResource(id = R.color.customBlue)
+                                )
+
+                                Text(
+                                    text = "Change Location",
+                                    style = TextStyle(
+                                        color = colorResource(id = R.color.customBlue),
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
+                                )
+                            }
                         }
                     }
+                    LazyRow(
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    ) {
+                        item { Spacer(modifier = Modifier.width(10.dp)) }
+                        items(items = dailyForecasts ?: emptyList()) { items ->
+                            if (dailyForecasts != null) {
+                                RowItems(
+                                    item = items,
+                                    index = dailyForecasts.indexOf(items),
+                                    viewModel,
+                                )
+                            }
+                        }
+                        item { Spacer(modifier = Modifier.width(10.dp)) }
 
-                    TextButton(onClick = { navHostController.navigate("change_location") }) {
-                        Icon(
-                            modifier = Modifier.scale(0.8f),
-                            painter = painterResource(id = R.drawable.location),
-                            contentDescription = null,
-                            tint = colorResource(id = R.color.customBlue)
-                        )
-
-                        Text(
-                            text = "Change Location",
-                            style = TextStyle(
-                                color = colorResource(id = R.color.customBlue),
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                            )
-                        )
                     }
                 }
-
-
-                LazyRow(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                ) {
-                    item { Spacer(modifier = Modifier.width(10.dp)) }
-                    items(items = dailyForecasts ?: emptyList()) { items ->
-                        if (dailyForecasts != null) {
-                            RowItems(
-                                item = items,
-                                index = dailyForecasts.indexOf(items),
-                                viewModel,
+                item {
+                    FlowRow(
+                        Modifier.padding(end = 5.dp, start = 5.dp),
+                        maxItemsInEachRow = 2,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        w_boxList.forEach { box ->
+                            GridItems(
+                                item = box, modifier = Modifier
+                                    .size((screenWidth / 2) - 5.dp)
+                                    .padding(
+                                        vertical = 5.dp,
+                                        horizontal
+                                        = 5.dp
+                                    )
                             )
                         }
-                    }
-                    item { Spacer(modifier = Modifier.width(10.dp)) }
-                }
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.padding(10.dp),
-                ) {
-                    items(w_boxList) { item ->
-                        GridItems(item = item)
                     }
                 }
             }

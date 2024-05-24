@@ -101,7 +101,6 @@ fun GridItems(item: MutableMap<String, Any?>,modifier: Modifier=Modifier) {
     }
     Card(
         modifier = modifier
-            .padding(vertical = 5.dp, horizontal = 5.dp)
             .aspectRatio(1f),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(R.color.customBox)),
