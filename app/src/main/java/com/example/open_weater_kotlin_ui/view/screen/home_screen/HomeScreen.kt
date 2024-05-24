@@ -111,13 +111,13 @@ fun HomeScreen(
                                             textAlign = TextAlign.Center,
                                             color = Color.White,
                                             fontWeight = FontWeight.Normal,
-                                            fontSize = 30.sp,
-                                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                            fontSize = 36.sp,
+                                            fontFamily = FontFamily(Font(R.font.poppins))
                                         )
                                     )
                                 }
                                 Row(
-                                    horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically
+                                    horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
                                         text = current?.main?.temp?.toInt().toString(),
@@ -133,7 +133,7 @@ fun HomeScreen(
                                         style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 22.sp,
+                                            fontSize = 28.sp,
                                             fontFamily = FontFamily(Font(R.font.poppins_light))
                                         )
                                     )
@@ -256,11 +256,7 @@ fun HomeScreen(
                         )
                     }
                 }, item = {
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            color = Color.White,
-                        )
-                    } else {
+
                         Switch(
                             checked = !viewModel.isMetric.value, onCheckedChange = {
                                 viewModel.toggleUnit()
@@ -273,7 +269,7 @@ fun HomeScreen(
                                 checkedTrackColor = colorResource(R.color.customCard)
                             )
                         )
-                    }
+
                 }
                 )
             }
