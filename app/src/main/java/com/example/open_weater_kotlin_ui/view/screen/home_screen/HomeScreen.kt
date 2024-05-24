@@ -101,11 +101,9 @@ fun HomeScreen(
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.SpaceEvenly,
-                                modifier = Modifier.padding(10.dp)
                             ) {
                                 current?.name?.let {
                                     Text(
-                                        modifier = Modifier.padding(top = 60.dp),
                                         text = it,
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis,
@@ -126,7 +124,7 @@ fun HomeScreen(
                                         style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 44.sp,
+                                            fontSize = 80.sp,
                                             fontFamily = FontFamily(Font(R.font.poppins_light))
                                         )
                                     )
@@ -135,15 +133,11 @@ fun HomeScreen(
                                         style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 36.sp,
+                                            fontSize = 22.sp,
                                             fontFamily = FontFamily(Font(R.font.poppins_light))
                                         )
                                     )
-
-
                                 }
-                                Spacer(modifier = Modifier.width(8.dp))
-
                                 val id = current?.weather?.get(0)?.id?.toInt()
                                 if (id != null) {
                                     Text(
@@ -155,7 +149,6 @@ fun HomeScreen(
                                         )
                                     )
                                 }
-
                                 Row(
                                     horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.Bottom
                                 ) {
