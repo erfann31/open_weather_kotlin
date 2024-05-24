@@ -1,3 +1,5 @@
+package com.example.open_weater_kotlin_ui
+
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -11,20 +13,23 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.core.content.ContextCompat
 import com.example.open_weater_kotlin_ui.MainActivity
 import com.example.open_weater_kotlin_ui.R
 
-class SplashActivity : ComponentActivity() {
+ class SplashActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -46,8 +51,15 @@ class SplashActivity : ComponentActivity() {
     @Composable
     fun SplashScreenContent() {
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize().background(
+                Brush.verticalGradient(
+                    listOf(
+                        colorResource(R.color.customCyan),
+                        colorResource(R.color.customBlue)
+                    )
+                )
+            ),
+            contentAlignment = Alignment.Center,
         ) {
             // Customize your splash screen UI here
             Icon(

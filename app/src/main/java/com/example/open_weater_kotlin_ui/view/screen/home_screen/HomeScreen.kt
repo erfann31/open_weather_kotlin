@@ -117,24 +117,27 @@ fun HomeScreen(
                                     )
                                 }
                                 Row(
-                                    horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically
-                                ) {
+                                    horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Top)
+                                {
                                     Text(
+                                        modifier = Modifier.padding(start = 24.dp),
                                         text = current?.main?.temp?.toInt().toString(),
                                         style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 80.sp,
+                                            fontSize = 76.sp,
                                             fontFamily = FontFamily(Font(R.font.poppins_light))
                                         )
                                     )
                                     Text(
+                                        modifier = Modifier.padding(top = 14.dp),
                                         text = tempUnit,
                                         style = TextStyle(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 28.sp,
-                                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                                            fontFamily = FontFamily(Font(R.font.poppins_light)),
+
                                         )
                                     )
                                 }
@@ -145,7 +148,7 @@ fun HomeScreen(
                                             color = Color.White,
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 24.sp,
-                                            fontFamily = FontFamily(Font(R.font.poppins_light))
+                                            fontFamily = FontFamily(Font(R.font.poppins_light)),
                                         )
                                     )
                                 }
@@ -212,7 +215,8 @@ fun HomeScreen(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
                         contentDescription = "go_to_hourly_forecast_screen",
-                        Modifier.size(35.dp)
+                        Modifier.size(35.dp),
+                        tint = Color.White
                     )
                 })
                 Spacer(modifier = Modifier.height(20.dp))
@@ -229,7 +233,8 @@ fun HomeScreen(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
                         contentDescription = "go_to_hourly_forecast_screen",
-                        Modifier.size(35.dp)
+                        Modifier.size(35.dp),
+                        tint = Color.White
                     )
                 })
                 Spacer(modifier = Modifier.height(20.dp))
