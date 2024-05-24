@@ -1,150 +1,232 @@
 package com.example.open_weater_kotlin_ui.view.screen.home_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.open_weater_kotlin_ui.R
+import com.example.open_weater_kotlin_ui.model.entities.DailyForecast
+import com.example.open_weater_kotlin_ui.model.entities.HourlyForecast
+import com.example.open_weater_kotlin_ui.model.utils.Convertor
+import com.example.open_weater_kotlin_ui.model.utils.Convertor.getGeographicalDirection
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.selectedItemId
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.GridItems
+import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.widgets.RowItems
+import com.example.open_weater_kotlin_ui.view.theme.GradientBackground
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
+import java.util.Locale
 
 @Composable
-fun HomeScreen(navController: NavController,viewModel: WeatherViewModel) {
-    var isCelsius by rememberSaveable { mutableStateOf(true) }
-    val currentTemp = 26 // دمای فعلی
-    val currentCondition = "Sunny" // وضعیت فعلی هوا
+fun HomeScreen(navHostController: NavHostController
+    ,viewModel: WeatherViewModel) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        colorResource(R.color.customCyan),
-                        colorResource(R.color.customBlue)
-                    )
-                )
-            )
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Isfahan",
-            style = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Normal,
-                fontSize = 30.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_semibold))
-            )
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "$currentTemp° $currentCondition",
-            style = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_light))
-            )
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { navController.navigate("search") },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White)
-        ) {
-            Text(
-                text = "Change Location",
-                style = TextStyle(
-                    color = colorResource(R.color.customBlue),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                )
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            TextButton(
-                onClick = { navController.navigate("hourlyForecast") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-            ) {
-                Text(
-                    text = "Hourly Forecast",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                    )
-                )
+    val isLoading by viewModel.isLoading.observeAsState(true)
+    val isMetric = viewModel.isMetric.value
+    val temp = remember {
+        mutableStateOf(
+            if (isMetric) {
+                "℃"
+            } else {
+                "°F"
             }
+        )
+    }
+    val context = LocalContext.current
 
-            TextButton(
-                onClick = { navController.navigate("weeklyForecast") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-            ) {
-                Text(
-                    text = "Weekly Forecast",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                    )
-                )
+    val windSpeed = remember {
+        mutableStateOf(
+            if (isMetric) {
+                "km/h"
+            } else {
+                "mph"
+            }
+        )
+    }
+    val current by viewModel.currentWeather.observeAsState()
+    val dailyForecast by viewModel.dailyForecast.observeAsState()
+    val error by viewModel.error.observeAsState()
+
+    if (error != null) {
+        Toast.makeText(context, "An error occurred: $error", Toast.LENGTH_SHORT).show()
+    }
+    if (isLoading) {
+        // Display loading indicator
+        GradientBackground {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = Color.White)
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+    } else {
+        val dailyForecasts: List<DailyForecast>? = dailyForecast?.list
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            colorResource(R.color.customCyan),
+                            colorResource(R.color.customBlue)
+                        )
+                    )
+                )
+                .padding(top = 6.dp)
         ) {
-            Text(
-                text = if (isCelsius) "°C" else "°F",
-                style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                )
-            )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            current?.name?.let {
+                                Text(
+                                    modifier = Modifier.padding(top = 60.dp),
+                                    text = it,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = TextStyle(
+                                        textAlign = TextAlign.Center,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 36.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
+                                )
+                            }
+                            Row(
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "${current?.main?.temp?.toInt().toString()}°",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 52.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+                                Text(
+                                    text = if (temp.value == "℃") "c" else "F",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 40.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
 
-            Spacer(modifier = Modifier.width(8.dp))
 
-            Switch(
-                checked = isCelsius,
-                onCheckedChange = { isCelsius = !isCelsius },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = colorResource(R.color.customCard),
-                    uncheckedThumbColor = Color.Gray
-                )
-            )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            val id =current?.weather?.get(0)?.id?.toInt()
+                            if (id != null) {
+                                Text(
+                                    text = if (id == 800) "Clear" else Convertor.getStatus(id / 100),
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 24.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+                            }
+
+                            Row(
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.Bottom
+                            ) {
+                                Text(
+                                    text = "H : ${String.format(Locale.ENGLISH, "%.1f", dailyForecasts?.get(0)?.temp?.max)}°",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 22.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(14.dp))
+                                Text(
+                                    text =  "L : ${String.format(Locale.ENGLISH, "%.1f", dailyForecasts?.get(0)?.temp?.min)}°",
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 22.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_light))
+                                    )
+                                )
+
+
+                            }
+
+                            TextButton(onClick = { navHostController.navigate("change_location") }) {
+                                Icon(
+                                    modifier = Modifier.scale(0.8f),
+                                    painter = painterResource(id = R.drawable.location),
+                                    contentDescription = null,
+                                    tint = colorResource(id = R.color.customBlue)
+                                )
+
+                                Text(
+                                    text = "Change Location",
+                                    style = TextStyle(
+                                        color = colorResource(id = R.color.customBlue),
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                    )
+                                )
+                            }
+                        }
+
+
+                    }
+                }
+
+            }
+
+
         }
+
+
     }
 }
