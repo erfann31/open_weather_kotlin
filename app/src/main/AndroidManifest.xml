@@ -17,21 +17,32 @@
         android:theme="@style/Theme.Open_weater_kotlin_ui"
         tools:targetApi="31">
         <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Open_weater_kotlin_ui">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Open_weater_kotlin_ui">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                    <action android:name="android.intent.action.SEND" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <data android:mimeType="text/plain" />
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>
