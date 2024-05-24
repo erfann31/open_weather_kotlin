@@ -1,10 +1,11 @@
-package com.example.open_weather_kotlin_ui
+package com.example.open_weater_kotlin_ui.view.screen.home_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -18,9 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.open_weater_kotlin_ui.R
+import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController,viewModel: WeatherViewModel) {
     var isCelsius by rememberSaveable { mutableStateOf(true) }
     val currentTemp = 26 // دمای فعلی
     val currentCondition = "Sunny" // وضعیت فعلی هوا

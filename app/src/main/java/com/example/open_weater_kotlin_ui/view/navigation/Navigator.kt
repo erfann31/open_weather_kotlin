@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.open_weater_kotlin_ui.view.screen.change_location.ChangeLocationScreen
+import com.example.open_weater_kotlin_ui.view.screen.home_screen.HomeScreen
 import com.example.open_weater_kotlin_ui.view.screen.hourly_forecast.HourlyForecastScreen
 import com.example.open_weater_kotlin_ui.view.screen.weekly_forecast.WeeklyForecastScreen
 import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
@@ -23,9 +24,12 @@ import com.example.open_weater_kotlin_ui.view_model.WeatherViewModel
 fun Navigator(viewMode: WeatherViewModel) {
     val navHostController = rememberNavController()
 
-    NavHost(navController = navHostController, startDestination = "hourly_forecast") {
+    NavHost(navController = navHostController, startDestination = "home_screen") {
         composable("hourly_forecast") {
             HourlyForecastScreen(navHostController, viewMode)
+        }
+        composable("home_screen") {
+            HomeScreen(navHostController, viewMode)
         }
         composable("change_location") {
             ChangeLocationScreen(navHostController, viewMode)
