@@ -270,7 +270,7 @@ fun WeeklyForecastScreen(
                             )
                             {
                                 Text(
-                                    text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()}°",
+                                    text = "${dailyForecasts?.get(0)?.temp?.day?.toInt().toString()} ",
                                     style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
@@ -280,7 +280,8 @@ fun WeeklyForecastScreen(
                                 )
 
                                 Text(
-                                    text = if (temp == "℃") "c" else "F", style = TextStyle(
+                                    text = temp,
+                                    style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,

@@ -257,7 +257,7 @@ fun HourlyForecastScreen(
                                 verticalAlignment = Alignment.Bottom
                             ) {
                                 Text(
-                                    text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()}°",
+                                    text = "${hourlyForecasts?.get(0)?.main?.temp?.toInt().toString()} ",
                                     style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
@@ -266,7 +266,7 @@ fun HourlyForecastScreen(
                                     )
                                 )
                                 Text(
-                                    text = if (temp == "℃") "c" else "F",
+                                    text = temp,
                                     style = TextStyle(
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
